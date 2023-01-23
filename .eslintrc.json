@@ -3,20 +3,22 @@
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "eslint:recommended",
-        "prettier",
-        "plugin:react/recommended"
-    ],
-    "overrides": [
-    ],
+    "extends": ["eslint:recommended", "prettier", "plugin:react/recommended"],
+    "overrides": [],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react"],
     "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+
+        // "parser": "babel-eslint",
+        // "prettier/prettier": ["error", { "endOfLine": "auto" }],
+        // "no-trailing-whitespace": null,
+
+        "camelcase": ["error"],
+        "eqeqeq": ["error", "always"]
     }
 }
