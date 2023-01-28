@@ -5,33 +5,60 @@
 
 $color-bg: #181818;
 
-// ========== fonts ========
-// @font-face {
-//     font-family: 'StratosSkyeng';
-//     src: local('StratosSkyeng'), local('StratosSkyeng'),
-//         url('../fonts/StratosSkyeng.woff2') format('woff2'),
-//         url('../fonts/StratosSkyeng.woff') format('woff'),
-//         url('../fonts/StratosSkyeng.ttf') format('truetype');
-//     font-weight: 400;
-//     font-style: normal;
-// }
+@font-face {
+    font-family: 'StratosSkyeng';
 
+    src: local('StratosSkyeng'), local('StratosSkyeng');
+    //     url('../fonts/StratosSkyeng.woff2') format('woff2'),
+    //     url('../fonts/StratosSkyeng.woff') format('woff'),
+    //     url('../fonts/StratosSkyeng.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+}
 
 // -------------------------- FOR PAGE ----------------------
 //
 
 body {
+    background-color: $color-bg;
+
     font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
         'Helvetica Neue', sans-serif, 'Courier New', monospace;
 
-    background-color: $color-bg;
+    position: absolute;
 
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // align-content: center;
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: grey transparent;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #313131;
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #ffffff;
+            border-radius: 4px;
+            border: 0px solid transparent;
+        }
+    }
+
+
 }
 
+button {
+    cursor: pointer;
+}
+
+// -------------------------- FOR PAGE ----------------------
+//
 
 * {
     margin: 0;
@@ -186,6 +213,7 @@ body {
 }
 
 .burger {
+    cursor: pointer;
 
     &__line {
         display: inline-block;
@@ -216,7 +244,6 @@ body {
 }
 
 .centerblock {
-
     &__search {
         width: 100%;
         border-bottom: 1px solid #4E4E4E;
@@ -300,12 +327,65 @@ body {
         border-radius: 60px;
         padding: 6px 20px;
 
+        cursor: pointer;
+
         &:not(:last-child) {
             margin-right: 10px;
         }
     }
+
+    &__current {
+        border-color: #AD61FF;
+        color: #AD61FF;
+        cursor: pointer;
+    }
 }
 
+.filterListBox {
+    position: absolute;
+    left: -1400px;
+
+    background-color: #313131;
+    border-radius: 12px;
+
+    padding: 20px;
+
+    &>div {
+        width: 220px;
+        min-height: 20px;
+        max-height: 280px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 10px;
+
+        overflow-y: auto;
+    }
+
+    & span {
+        color: #FFFFFF;
+        cursor: pointer;
+
+        &:hover {
+            color: #B672FF;
+            text-decoration: underline
+        }
+    }
+
+    &_author {
+        left: 450px;
+    }
+
+    &_release {
+        left: 600px;
+    }
+
+    &_genre {
+        left: 750px;
+    }
+}
 
 .content {
 
@@ -376,6 +456,12 @@ body {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+}
+
+.playlist-plug {
+    & div * {
+        background-color: #313131;
     }
 }
 
@@ -542,12 +628,14 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(28, 28, 28, 0.5);
+    background: rgba(28, 28, 28, 1);
+
+    position: fixed;
+    bottom: 0;
 }
 
 
 .bar {
-
     &__content {
         display: flex;
         flex-direction: column;
