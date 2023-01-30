@@ -1,4 +1,4 @@
-export const PlayerBlock = () => {
+const PlayerBlock = () => {
     return (
         <div className="bar__player-block">
             <div className="bar__player player">
@@ -79,6 +79,17 @@ export const PlayerBlock = () => {
                         />
                     </div>
                 </div>
+            </div>
+        </div>
+    )
+}
+
+export const Bar = () => {
+    return (
+        <div className="bar">
+            <div className="bar__content">
+                <div className="bar__player-progress"></div>
+                <PlayerBlock />
             </div>
         </div>
     )

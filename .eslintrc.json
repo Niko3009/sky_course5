@@ -14,7 +14,7 @@
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
 
-        // "parser": "babel-eslint",
+        "parser": "babel-eslint",
         // "prettier/prettier": ["error", { "endOfLine": "auto" }],
         // "no-trailing-whitespace": null,
 
