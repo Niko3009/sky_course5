@@ -1,17 +1,40 @@
-import './css/style.css'
+import { AppStyle } from './app/appStyle'
 
+import React from 'react'
+const { useState } = React
 
-
-import { Main } from './appComponents/main'
-import { Bar } from './appComponents/bar'
+import { StartPage } from './app/startPage'
+import { Account } from './app/account'
 
 const App = () => {
+    const [status, setStatus] = useState({
+        login: null,
+    })
+    const statusObj = status
+    const changeStatus = function (newStatus) {
+        setStatus({
+            login: newStatus.login,
+        })
+    }
+
+    const logIn = function (login) {
+        statusObj.login = login
+        changeStatus(statusObj)
+    }
+
+    const logOut = function () {
+        statusObj.login = null
+        changeStatus(statusObj)
+    }
+
     return (
-        <div className="container">
-            <Main />
-            <Bar />
-            <footer className="footer"></footer>
-        </div>
+        <AppStyle>
+            {!status.login && <StartPage logIn={logIn} />}
+
+            {status.login && (
+                <Account logOut={logOut} account={statusObj.login} />
+            )}
+        </AppStyle>
     )
 }
 
