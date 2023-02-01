@@ -1,4 +1,4 @@
-import { startPageStyle as Style } from './startPage/startPageStyle'
+import { startPageStyle as Style, Form } from './startPage/startPageStyle'
 
 import React from 'react'
 const { useState } = React
@@ -42,7 +42,7 @@ export const StartPage = (props) => {
 
 const LoginForm = (props) => {
     return (
-        <div className="form">
+        <Form>
             <Logo />
 
             <input type="text" name="login" placeholder="Логин (пока любой)" />
@@ -68,13 +68,13 @@ const LoginForm = (props) => {
             >
                 Зарегистрироваться
             </button>
-        </div>
+        </Form>
     )
 }
 
 const RegistrationForm = (props) => {
     return (
-        <div className="form">
+        <Form>
             <Logo />
 
             <input type="text" name="login" placeholder="Логин (пока любой)" />
@@ -98,7 +98,7 @@ const RegistrationForm = (props) => {
             >
                 Зарегистрироваться
             </button>
-        </div>
+        </Form>
     )
 }
 

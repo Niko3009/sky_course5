@@ -1,4 +1,4 @@
-import { AppStyle } from './app/appStyle'
+import { AppStyle as Style } from './app/appStyle'
 
 import React from 'react'
 const { useState } = React
@@ -28,13 +28,13 @@ const App = () => {
     }
 
     return (
-        <AppStyle>
+        <Style>
             {!status.login && <StartPage logIn={logIn} />}
 
             {status.login && (
                 <Account logOut={logOut} account={statusObj.login} />
             )}
-        </AppStyle>
+        </Style>
     )
 }
 

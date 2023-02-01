@@ -9,23 +9,23 @@ export const startPageStyle = styled('div')`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+
+export const Form = styled('div')`
+    height: 439px;
+    width: 366px;
+    border-radius: 12px;
+    background-color: #fff;
+
+    padding: 40px;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
 
     & {
-        .form {
-            height: 439px;
-            width: 366px;
-            border-radius: 12px;
-            background-color: #fff;
-
-            padding: 40px;
-
-            display: flex;
-            flex-flow: column;
-            justify-content: flex-start;
-            gap: 20px;
-            align-items: center;
-        }
-
         & input {
             &,
             &:active,

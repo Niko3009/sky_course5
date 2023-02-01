@@ -1,10 +1,11 @@
 import React from 'react'
 const { useState } = React
 
-import { Nav } from './main/nav'
+import { MainStyle as Style } from './main/mainStyle'
 
-import { SideBar } from './main/sideBar'
+import { Nav } from './main/nav'
 import { CenterBlock } from './main/centerBlock'
+import { SideBar } from './main/sideBar'
 
 export const Main = (props) => {
     const [status, setStatus] = useState({
@@ -22,15 +23,8 @@ export const Main = (props) => {
         changeStatus(statusObj)
     }
 
-    // const selectionsOfTracks = [
-    //     'MyPlaylist',
-    //     'PlaylistOfDay',
-    //     'DanceHits',
-    //     'IndieСharge',
-    // ]
-
     return (
-        <main className="main">
+        <Style>
             <Nav changeSection={changeSection} logOut={props.logOut} />
 
             <CenterBlock
@@ -41,6 +35,6 @@ export const Main = (props) => {
             {status.section === 'AllTracks' && (
                 <SideBar changeSection={changeSection} />
             )}
-        </main>
+        </Style>
     )
 }
