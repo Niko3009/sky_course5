@@ -1,70 +1,45 @@
 import { SideBarStyle as Style } from './sideBar/sideBarStyle'
 
-const SideBarPersonal = () => {
-    return (
-        <div className="sidebar__personal">
-            <p className="sidebar__personal-name">Sergey.Ivanov</p>
-            <div className="sidebar__avatar"></div>
-        </div>
-    )
-}
+import { Link } from 'react-router-dom'
 
-const SideBarBlock = (props) => {
-    return (
-        <div className="sidebar__block">
-            <div className="sidebar__list">
-                <div
-                    onClick={() => {
-                        props.changeSection('PlaylistOfDay')
-                    }}
-                    className="sidebar__item"
-                >
-                    <a className="sidebar__link">
-                        <img
-                            className="sidebar__img"
-                            src="img/playlist01.png"
-                            alt="Playlist Of Day"
-                        />
-                    </a>
-                </div>
-                <div
-                    onClick={() => {
-                        props.changeSection('DanceHits')
-                    }}
-                    className="sidebar__item"
-                >
-                    <a className="sidebar__link">
-                        <img
-                            className="sidebar__img"
-                            src="img/playlist02.png"
-                            alt="Dance Hits"
-                        />
-                    </a>
-                </div>
-                <div
-                    onClick={() => {
-                        props.changeSection('IndieСharge')
-                    }}
-                    className="sidebar__item"
-                >
-                    <a className="sidebar__link">
-                        <img
-                            className="sidebar__img"
-                            src="img/playlist03.png"
-                            alt="Indie Сharge"
-                        />
-                    </a>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export const SideBar = (props) => {
+export const SideBar = ({ mode }) => {
     return (
         <Style>
             <SideBarPersonal />
-            <SideBarBlock changeSection={props.changeSection} />
+            {!mode && <SideBarBlock />}
         </Style>
+    )
+}
+
+const SideBarPersonal = () => {
+    return (
+        <Link to="/profile/1">
+            <div className="sidebar_personal">
+                <p className="sidebar_personal_name">Sergey.Ivanov</p>
+                <div className="sidebar_personal_avatar"></div>
+            </div>
+        </Link>
+    )
+}
+
+const SideBarBlock = () => {
+    return (
+        <div className="sidebar_list">
+            <div>
+                <Link to="/main/playlist-of-day/1">
+                    <img src="/img/playlist01.png" alt="Playlist Of Day" />
+                </Link>
+            </div>
+            <div>
+                <Link to="/main/dance-hits/1">
+                    <img src="/img/playlist02.png" alt="Dance Hits" />
+                </Link>
+            </div>
+            <div>
+                <Link to="/main/indie-charge/1">
+                    <img src="/img/playlist03.png" alt="Indie Сharge" />
+                </Link>
+            </div>
+        </div>
     )
 }

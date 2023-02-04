@@ -1,66 +1,47 @@
+import { navStyle as Style } from './nav/navStyle'
+
 import React from 'react'
 const { useState } = React
 
-import { navStyle as Style } from './nav/navStyle'
+import { Link } from 'react-router-dom'
 
-const Logo = (props) => {
+export const Nav = ({ LogOut }) => {
     return (
-        <div
-            onClick={() => {
-                props.changeSection('AllTracks')
-            }}
-            className="nav__logo logo"
-        >
-            <img className="logo__image" src="/img/logo.png" />
-        </div>
+        <Style>
+            <Logo />
+            <BurgerMenu LogOut={LogOut} />
+        </Style>
     )
 }
 
-const BurgerMenu = (props) => {
+const Logo = () => {
+    return (
+        <Link to="/main" className="logo">
+            <img className="logo__image" src="/img/logo.png" />
+        </Link>
+    )
+}
+
+const BurgerMenu = ({ LogOut }) => {
     const [visible, setVisible] = useState(true)
 
     const switchVisibility = () => setVisible(!visible)
 
     return (
         <div>
-            <div onClick={switchVisibility} className="nav__burger burger">
-                <span className="burger__line"></span>
-                <span className="burger__line"></span>
-                <span className="burger__line"></span>
-            </div>
+            <BurgerWidget switchVisibility={switchVisibility} />
 
             {visible && (
-                <div className="nav__menu menu">
-                    <ul className="menu__list">
-                        <li className="menu__item">
-                            <a
-                                onClick={() => {
-                                    props.changeSection('AllTracks')
-                                }}
-                                className="menu__link"
-                            >
-                                Главное
-                            </a>
+                <div>
+                    <ul>
+                        <li>
+                            <Link to="/main">Главное</Link>
                         </li>
-                        <li className="menu__item">
-                            <a
-                                onClick={() => {
-                                    props.changeSection('MyPlaylist')
-                                }}
-                                className="menu__link"
-                            >
-                                Мой плейлист
-                            </a>
+                        <li>
+                            <Link to="/main/my-playlist/1">Мой плейлист</Link>
                         </li>
-                        <li className="menu__item">
-                            <a
-                                onClick={() => {
-                                    props.logOut()
-                                }}
-                                className="menu__link"
-                            >
-                                Выйти
-                            </a>
+                        <li>
+                            <p onClick={LogOut}>Выйти</p>
                         </li>
                     </ul>
                 </div>
@@ -69,14 +50,12 @@ const BurgerMenu = (props) => {
     )
 }
 
-export const Nav = (props) => {
+const BurgerWidget = ({ switchVisibility }) => {
     return (
-        <Style>
-            <Logo changeSection={props.changeSection} />
-            <BurgerMenu
-                changeSection={props.changeSection}
-                logOut={props.logOut}
-            />
-        </Style>
+        <div onClick={switchVisibility} className="burger">
+            <span />
+            <span />
+            <span />
+        </div>
     )
 }

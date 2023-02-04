@@ -3,49 +3,33 @@ import { startPageStyle as Style, Form } from './startPage/startPageStyle'
 import React from 'react'
 const { useState } = React
 
-export const StartPage = (props) => {
-    const [status, setStatus] = useState({
-        doesUserHaveAccount: true,
-    })
-    const statusObj = status
-    const changeStatus = function (newStatus) {
-        setStatus({
-            doesUserHaveAccount: newStatus.doesUserHaveAccount,
-        })
-    }
+export const StartPage = ({ LogIn }) => {
+    const [doesUserHaveAccount, setState] = useState(true)
 
-    const openRegistrationForm = function () {
-        statusObj.doesUserHaveAccount = false
-        changeStatus(statusObj)
-    }
-
-    const openLoginForm = function () {
-        statusObj.doesUserHaveAccount = true
-        changeStatus(statusObj)
+    const changeForm = function () {
+        setState(!doesUserHaveAccount)
     }
 
     return (
         <Style>
-            {status.doesUserHaveAccount && (
-                <LoginForm
-                    logIn={props.logIn}
-                    openRegistrationForm={openRegistrationForm}
-                />
+            {doesUserHaveAccount && (
+                <LoginForm LogIn={LogIn} openRegistrationForm={changeForm} />
             )}
 
-            {!status.doesUserHaveAccount && (
-                <RegistrationForm openLoginForm={openLoginForm} />
+            {!doesUserHaveAccount && (
+                <RegistrationForm openLoginForm={changeForm} />
             )}
         </Style>
     )
 }
 
-const LoginForm = (props) => {
+const LoginForm = ({ LogIn, openRegistrationForm }) => {
     return (
         <Form>
             <Logo />
 
             <input type="text" name="login" placeholder="Логин (пока любой)" />
+
             <input
                 type="password"
                 name="password"
@@ -54,30 +38,27 @@ const LoginForm = (props) => {
 
             <button
                 onClick={() => {
-                    props.logIn('Гость')
+                    LogIn('Гость')
                 }}
                 className={'btn-dark'}
             >
                 Войти
             </button>
-            <button
-                onClick={() => {
-                    props.openRegistrationForm()
-                }}
-                className={'btn-ligth'}
-            >
+
+            <button onClick={openRegistrationForm} className={'btn-ligth'}>
                 Зарегистрироваться
             </button>
         </Form>
     )
 }
 
-const RegistrationForm = (props) => {
+const RegistrationForm = ({ openLoginForm }) => {
     return (
         <Form>
             <Logo />
 
             <input type="text" name="login" placeholder="Логин (пока любой)" />
+
             <input
                 type="password"
                 name="password"
@@ -90,12 +71,7 @@ const RegistrationForm = (props) => {
                 placeholder="Повторите пароль"
             />
 
-            <button
-                onClick={() => {
-                    props.openLoginForm()
-                }}
-                className={'btn-dark'}
-            >
+            <button onClick={openLoginForm} className={'btn-dark'}>
                 Зарегистрироваться
             </button>
         </Form>
@@ -105,7 +81,7 @@ const RegistrationForm = (props) => {
 const Logo = () => {
     return (
         <div>
-            <img className='logo' src="/img/logo2.png" />
+            <img className="logo" src="/img/logo2.png" />
         </div>
     )
 }

@@ -12,6 +12,10 @@ export const AppStyle = styled('div')`
     overflow: hidden;
     background-color: ${colorBase};
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     & {
         .main {
             flex: 1 1 auto;

@@ -3,19 +3,26 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["eslint:recommended", "prettier", "plugin:react/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "prettier",
+        "plugin:react/recommended",
+        "eslint-config-prettier"
+    ],
     "overrides": [],
+    "plugins": ["react", "eslint-plugin-prettier", "eslint-plugin-react"],
     "parserOptions": {
+        "parser": "@babel/eslint-parser",
+        "requireConfigFile": false, // <== ADD THIS
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module", // Allows for the use of imports
+        "ecmaFeatures": { "jsx": true }
     },
-    "plugins": ["react"],
     "rules": {
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
 
-        "parser": "@babel/eslint-parser",
-        // "prettier/prettier": ["error", { "endOfLine": "auto" }],
+        "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "no-trailing-whitespace": null,
 
         "camelcase": ["error"],

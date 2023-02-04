@@ -1,12 +1,13 @@
+import { AccountStyle as Style } from './account/accountStyle'
+
 import { Main } from './account/main'
 import { Bar } from './account/bar'
 
-export const Account = (props) => {
+export const Account = ({ LogOut }) => {
     return (
-        <div>
-            <Main logOut={props.logOut} />
+        <Style>
+            <Main LogOut={LogOut} />
             <Bar />
-            <footer className="footer"></footer>
-        </div>
+        </Style>
     )
 }

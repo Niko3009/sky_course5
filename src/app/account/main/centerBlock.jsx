@@ -3,13 +3,19 @@ import { CenterBlockStyle as Style } from './centerBlock/centerBlockStyle'
 import React from 'react'
 const { useState } = React
 
+// import { useLocation } from 'react-router-dom'
+
 import { FilterSection } from './centerBlock/filterSection'
 import { PlaylistSection } from './centerBlock/playlistSection'
 import { Search } from './centerBlock/search'
 
 import tracks from './data/tracks'
 
-export const CenterBlock = (props) => {
+export const CenterBlock = ({ mode }) => {
+    // const path = useLocation().pathname
+    // let mode = path.substring(path.indexOf('main') + 5)
+    // if (path.indexOf('/')) mode = path.substring(0, path.indexOf('/'))
+
     const [status, setStatus] = useState({
         openedFilterList: null,
         filter: { filterType: null, filterItem: null },
@@ -24,8 +30,9 @@ export const CenterBlock = (props) => {
         })
     }
 
-    const filterTypes = [null, 'author', 'release', 'genre']
+    // console.log(status.isTrackListLoaded)
 
+    const filterTypes = [null, 'author', 'release', 'genre']
     const selectFilter = function (selectedFilterType) {
         if (selectedFilterType === status.filter.filterType) {
             statusObj.openedFilterList = null
@@ -56,9 +63,9 @@ export const CenterBlock = (props) => {
         <Style>
             <Search />
 
-            <SectionTitle section={props.section} />
+            <SectionTitle mode={mode} />
 
-            {props.section === 'AllTracks' && (
+            {!mode && (
                 <FilterSection
                     currentFilterType={status.filter.filterType}
                     selectFilter={selectFilter}
@@ -79,32 +86,28 @@ export const CenterBlock = (props) => {
     )
 }
 
-const SectionTitle = (props) => {
-    const section = props.section
+const SectionTitle = ({ mode }) => {
     let title
 
-    switch (section) {
-        case 'AllTracks':
-            title = 'Треки'
-            break
-
-        case 'MyPlaylist':
+    switch (mode) {
+        case 'my-playlist':
             title = 'Мой плейлист'
             break
 
-        case 'PlaylistOfDay':
-            title = 'Плейлист для'
+        case 'playlist-of-day':
+            title = 'Плейлист дня'
             break
 
-        case 'DanceHits':
+        case 'dance-hits':
             title = '100 танцевальных хитов'
             break
 
-        case 'IndieСharge':
+        case 'indie-charge':
             title = 'Инди заряд'
             break
 
         default:
+            title = 'Треки'
             break
     }
 
