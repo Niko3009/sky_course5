@@ -1,20 +1,25 @@
 import styled from 'styled-components'
 
 export const SideBarStyle = styled('div')`
-    max-width: 418px;
-    padding: 20px 90px 20px 78px;
+    width: 600px;
+    padding: 20px 0 20px 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     & {
-        .sidebar {
-            &__personal {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-end;
-                padding: 12px 0 15px 0;
-            }
+        .sidebar_personal {
+            width: 240px;
 
-            &__personal-name {
+            padding: 12px 0 15px 0;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            &_name {
                 font-style: normal;
                 font-weight: 400;
                 font-size: 16px;
@@ -23,28 +28,28 @@ export const SideBarStyle = styled('div')`
                 margin-right: 16px;
             }
 
-            &__avatar {
+            &_avatar {
                 width: 43px;
                 height: 43px;
                 background-color: #313131;
                 border-radius: 50%;
             }
+        }
 
-            &__block {
+        & .sidebar_list {
+            height: 100%;
+            padding: 240px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            & a {
+                width: 100%;
                 height: 100%;
-                padding: 240px 0 0 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
             }
 
-            &__list {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            &__item {
+            & div {
                 width: 250px;
                 height: 150px;
 
@@ -53,12 +58,7 @@ export const SideBarStyle = styled('div')`
                 }
             }
 
-            &__link {
-                width: 100%;
-                height: 100%;
-            }
-
-            &__img {
+            & img {
                 width: 100%;
                 height: auto;
             }

@@ -9,7 +9,7 @@ const PlaylistTitle = () => {
             <div className="playlist-title__col col03">АЛЬБОМ</div>
             <div className="playlist-title__col col04">
                 <svg className="playlist-title__svg" alt="time">
-                    <use xlinkHref="img/icon/sprite.svg#icon-watch"></use>
+                    <use xlinkHref="/img/icon/sprite.svg#icon-watch"></use>
                 </svg>
             </div>
         </div>
@@ -48,7 +48,7 @@ const Playlist = (props) => {
                     <div className="track__title">
                         <div className="track__title-image">
                             <svg className="track__title-svg" alt="music">
-                                <use xlinkHref="img/icon/sprite.svg#icon-note"></use>
+                                <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
                             </svg>
                         </div>
                         <div className="track__title-text">
@@ -75,7 +75,7 @@ const Playlist = (props) => {
 
                     <div className="track__time">
                         <svg className="track__time-svg" alt="time">
-                            <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
+                            <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                         </svg>
                         <span className="track__time-text">{props.time}</span>
                     </div>
@@ -115,7 +115,7 @@ const PlaylistPlug = (props) => {
                     <div className="track__title">
                         <div className="track__title-image">
                             <svg className="track__title-svg" alt="music">
-                                <use xlinkHref="img/icon/sprite.svg#icon-note"></use>
+                                <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
                             </svg>
                         </div>
                         <div className="track__title-text">
@@ -142,7 +142,7 @@ const PlaylistPlug = (props) => {
 
                     <div className="track__time">
                         <svg className="track__time-svg" alt="time">
-                            <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
+                            <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                         </svg>
                         <span className="track__time-text">{plugString}</span>
                     </div>

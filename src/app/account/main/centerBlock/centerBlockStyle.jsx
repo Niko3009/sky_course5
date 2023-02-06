@@ -156,15 +156,15 @@ export const CenterBlockStyle = styled('div')`
             }
 
             &_author {
-                left: 450px;
+                left: 320px;
             }
 
             &_release {
-                left: 600px;
+                left: 470px;
             }
 
             &_genre {
-                left: 750px;
+                left: 600px;
             }
         }
 
@@ -217,7 +217,7 @@ export const CenterBlockStyle = styled('div')`
 
         .col04 {
             width: 60px;
-            text-align: end;
+            text-align: start;
         }
 
         .playlist {

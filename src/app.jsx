@@ -1,39 +1,35 @@
 import { AppStyle as Style } from './app/appStyle'
 
-import React from 'react'
-const { useState } = React
+import { AppRoutes } from './app/routes'
+import { useNavigate } from 'react-router-dom'
 
-import { StartPage } from './app/startPage'
-import { Account } from './app/account'
+import React from 'react'
+// const { useState } = React
 
 const App = () => {
-    const [status, setStatus] = useState({
-        login: null,
-    })
-    const statusObj = status
-    const changeStatus = function (newStatus) {
-        setStatus({
-            login: newStatus.login,
-        })
-    }
+    let navigate = useNavigate()
 
-    const logIn = function (login) {
-        statusObj.login = login
-        changeStatus(statusObj)
-    }
+    // const [user, setUser] = useState(null)
 
-    const logOut = function () {
-        statusObj.login = null
-        changeStatus(statusObj)
+    const userAccessСontrol = {
+        LogIn: () => {
+            // setUser({ login: login })
+            localStorage.setItem('token', '1234')
+            navigate('/main', { replace: true })
+        },
+        LogOut: () => {
+            // setUser(null)
+            localStorage.clear()
+            navigate('/', { replace: true })
+        },
     }
 
     return (
         <Style>
-            {!status.login && <StartPage logIn={logIn} />}
-
-            {status.login && (
-                <Account logOut={logOut} account={statusObj.login} />
-            )}
+            <AppRoutes
+                user={localStorage.getItem('token')}
+                userAccessСontrol={userAccessСontrol}
+            />
         </Style>
     )
 }

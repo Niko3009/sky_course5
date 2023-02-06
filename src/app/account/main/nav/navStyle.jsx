@@ -9,55 +9,62 @@ const colorBase = '#181818'
 export const navStyle = styled('div')`
     width: 244px;
     background-color: ${colorBase};
+
     padding: 20px 0 20px 36px;
 
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
     & {
-        .nav {
-            &__logo {
-                width: 113.33px;
-                height: 43px;
-                padding: 13px 0 13px 0;
-                background-color: transparent;
-                margin-bottom: 20px;
-            }
+        & ul {
+            padding: 18px 0 10px 0;
 
-            &__burger {
-                width: 20px;
-                height: 36px;
-                padding: 13px 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-
-            &__menu {
-                display: block;
-                visibility: visible;
-            }
-        }
-
-        .menu {
-            &__list {
-                padding: 18px 0 10px 0;
-            }
-
-            &__item {
+            & li {
                 padding: 5px 0;
                 margin-bottom: 16px;
             }
 
-            &__link {
+            & a {
                 color: #ffffff;
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
+
+                cursor: pointer;
+            }
+
+            & p {
+                color: #ffffff;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 24px;
+
+                cursor: pointer;
             }
         }
 
-        .burger {
+        & .logo {
+            width: 113.33px;
+            height: 43px;
+            padding: 13px 0 13px 0;
+            background-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        & .burger {
+            width: 20px;
+            height: 36px;
+            padding: 13px 0;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
             cursor: pointer;
 
-            &__line {
+            & span {
                 display: inline-block;
                 width: 100%;
                 height: 1px;
