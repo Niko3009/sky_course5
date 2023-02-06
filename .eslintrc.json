@@ -23,7 +23,7 @@
         "react/prop-types": "off",
 
         "prettier/prettier": ["error", { "endOfLine": "auto" }],
-        "no-trailing-whitespace": null,
+        "no-trailing-whitespace": 0,
 
         "camelcase": ["error"],
         "eqeqeq": ["error", "always"]
