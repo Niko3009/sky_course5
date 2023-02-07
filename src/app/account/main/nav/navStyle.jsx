@@ -1,14 +1,8 @@
 import styled from 'styled-components'
 
-// ============================================================================================
-
-const colorBase = '#181818'
-
-// ============================================================================================
-
-export const navStyle = styled('div')`
-    width: 244px;
-    background-color: ${colorBase};
+export const NavStyle = styled('div')`
+    width: 240px;
+    background-color: ${(props) => props.data.colorN2};
 
     padding: 20px 0 20px 36px;
 
@@ -27,7 +21,7 @@ export const navStyle = styled('div')`
             }
 
             & a {
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
@@ -36,7 +30,7 @@ export const navStyle = styled('div')`
             }
 
             & p {
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
@@ -70,6 +64,10 @@ export const navStyle = styled('div')`
                 height: 1px;
                 background-color: #d3d3d3;
             }
+        }
+
+        & svg {
+            cursor: pointer;
         }
     }
 `

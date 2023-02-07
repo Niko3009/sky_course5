@@ -1,11 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
 
-// ======================================== VAR ============================================
-
-const colorBase = '#181818'
-
-// =========================================================================================
-
 export const GlobalStyle = createGlobalStyle`
 
 @font-face {
@@ -23,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
 // ----------------------------------------------
 
 html, body {
-    background-color: ${colorBase};
+    background-color: ${(props) => props.data.colorBasic};
 
     width: 100%;
     height: 100%;
@@ -32,13 +26,13 @@ html, body {
         'Helvetica Neue', sans-serif, 'Courier New', monospace;
     font-family: 'StratosSkyeng', sans-serif;
 
-    color: #FFFFFF;
+    color: ${(props) => props.data.colorN1};
 
 
     /* scrollbar */
     * {
         scrollbar-width: thin;
-        scrollbar-color: grey transparent;
+        /* scrollbar-color: green; */
 
         &::-webkit-scrollbar {
             width: 4px;
@@ -46,13 +40,13 @@ html, body {
         }
 
         &::-webkit-scrollbar-track {
-            background: #313131;
+            /* background: red; */
             border-radius: 8px;
             background: transparent;
         }
 
         &::-webkit-scrollbar-thumb {
-            background-color: #ffffff;
+            background-color: ${(props) => props.data.colorN1};
             border-radius: 4px;
             border: 0px solid transparent;
         }
@@ -86,13 +80,7 @@ button {
     cursor: pointer;
 }
 
-.container {
-    max-width: 1920px;
-    height: 100vh;
-    margin: 0 auto;
-    position: relative;
-    background-color: ${colorBase};
-}
+
 
 
 ._btn {
@@ -125,7 +113,7 @@ button {
 
     & svg {
     fill: transparent;
-    stroke: #FFFFFF;
+    stroke: ${(props) => props.data.colorN1};
     cursor: pointer;
 
     }
@@ -133,7 +121,7 @@ button {
     & .track-play__like-svg,
     & .track-play__dislike-svg {
     fill: #696969;
-    stroke: #FFFFFF;
+    stroke: ${(props) => props.data.colorN1};
     cursor: pointer;
     }
 }

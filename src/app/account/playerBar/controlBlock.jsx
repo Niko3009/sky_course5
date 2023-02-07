@@ -1,5 +1,8 @@
 import { useRef, useEffect } from 'react'
 
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
 // import { Link } from 'react-router-dom'
 
 export const ControlBlock = ({
@@ -151,6 +154,13 @@ const NoteIcon = () => {
 }
 
 const VolumeIcon = ({ action }) => {
+    const appTheme = useContext(appThemeContext)
+
+    const style = {
+        stroke: appTheme.current.colorN1,
+        fill: appTheme.current.colorN1,
+    }
+
     return (
         <Icon
             divClass={`volume__image`}
@@ -158,6 +168,7 @@ const VolumeIcon = ({ action }) => {
             alt={'volume'}
             src={`/img/icon/sprite.svg#icon-volume`}
             action={action}
+            style={style}
         />
     )
 }

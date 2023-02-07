@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const SideBarStyle = styled('div')`
-    width: 600px;
+    width: 360px;
     padding: 20px 0 20px 0;
 
     display: flex;
@@ -24,14 +24,14 @@ export const SideBarStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 margin-right: 16px;
             }
 
             &_avatar {
                 width: 43px;
                 height: 43px;
-                background-color: #313131;
+                background-color: ${(props) => props.data.colorN2};
                 border-radius: 50%;
             }
         }

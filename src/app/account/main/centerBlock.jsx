@@ -9,12 +9,13 @@ import { FilterSection } from './centerBlock/filterSection'
 import { PlaylistSection } from './centerBlock/playlistSection'
 import { Search } from './centerBlock/search'
 
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
 import tracks from './data/tracks'
 
 export const CenterBlock = ({ mode }) => {
-    // const path = useLocation().pathname
-    // let mode = path.substring(path.indexOf('main') + 5)
-    // if (path.indexOf('/')) mode = path.substring(0, path.indexOf('/'))
+    const appTheme = useContext(appThemeContext)
 
     const [status, setStatus] = useState({
         openedFilterList: null,
@@ -29,8 +30,6 @@ export const CenterBlock = ({ mode }) => {
             isTrackListLoaded: newStatus.isTrackListLoaded,
         })
     }
-
-    // console.log(status.isTrackListLoaded)
 
     const filterTypes = [null, 'author', 'release', 'genre']
     const selectFilter = function (selectedFilterType) {
@@ -60,7 +59,7 @@ export const CenterBlock = ({ mode }) => {
     }
 
     return (
-        <Style>
+        <Style data={appTheme.current}>
             <Search />
 
             <SectionTitle mode={mode} />

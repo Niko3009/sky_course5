@@ -1,15 +1,20 @@
 import styled from 'styled-components'
+
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
 import { useNavigate } from 'react-router-dom'
 
 export const NotFound = () => {
-    let navigate = useNavigate()
+    const appTheme = useContext(appThemeContext)
+    const navigate = useNavigate()
 
     const backToMain = function () {
         navigate('/main', { replace: true })
     }
 
     return (
-        <Style>
+        <Style data={appTheme.current}>
             <h1>404</h1>
 
             <div>
@@ -84,7 +89,7 @@ const Style = styled('div')`
                 border: 0px;
                 background: #580ea2;
 
-                color: white;
+                color: '#fffff';
                 font-size: 18px;
                 font-weight: 400;
             }
