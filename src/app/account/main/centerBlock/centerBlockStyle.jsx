@@ -43,8 +43,7 @@ export const CenterBlockStyle = styled('div')`
                 width: 17px;
                 height: 17px;
                 margin-right: 5px;
-                stroke: #ffffff;
-                fill: transparent;
+                stroke: ${(props) => props.data.colorN1};
             }
 
             &__text {
@@ -56,11 +55,11 @@ export const CenterBlockStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
 
                 &::placeholder {
                     background-color: transparent;
-                    color: #ffffff;
+                    color: ${(props) => props.data.colorN1};
                     font-style: normal;
                     font-weight: 400;
                     font-size: 16px;
@@ -83,7 +82,7 @@ export const CenterBlockStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                border: 1px solid #ffffff;
+                border: 1px solid ${(props) => props.data.colorN1};
                 border-radius: 60px;
                 padding: 6px 20px;
 
@@ -126,7 +125,7 @@ export const CenterBlockStyle = styled('div')`
             position: absolute;
             left: -1400px;
 
-            background-color: #313131;
+            background-color: ${(props) => props.data.colorN2};
             border-radius: 12px;
 
             padding: 20px;
@@ -146,7 +145,7 @@ export const CenterBlockStyle = styled('div')`
             }
 
             & span {
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 cursor: pointer;
 
                 &:hover {
@@ -156,15 +155,15 @@ export const CenterBlockStyle = styled('div')`
             }
 
             &_author {
-                left: 320px;
+                left: 400px;
             }
 
             &_release {
-                left: 470px;
+                left: 550px;
             }
 
             &_genre {
-                left: 600px;
+                left: 700px;
             }
         }
 
@@ -180,7 +179,6 @@ export const CenterBlockStyle = styled('div')`
             &__playlist {
                 display: flex;
                 flex-direction: column;
-                overflow-y: auto;
             }
         }
 
@@ -237,7 +235,7 @@ export const CenterBlockStyle = styled('div')`
 
         .playlist-plug {
             & div * {
-                background-color: #313131;
+                background-color: ${(props) => props.data.colorN2};
             }
         }
 
@@ -253,7 +251,7 @@ export const CenterBlockStyle = styled('div')`
                 width: 51px;
                 height: 51px;
                 padding: 16px;
-                background: #313131;
+                background: ${(props) => props.data.colorN2};
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -274,7 +272,7 @@ export const CenterBlockStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
             }
 
             &__title-span {
@@ -296,7 +294,7 @@ export const CenterBlockStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 text-align: left;
             }
 

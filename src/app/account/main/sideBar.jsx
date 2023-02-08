@@ -1,10 +1,15 @@
 import { SideBarStyle as Style } from './sideBar/sideBarStyle'
 
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
 import { Link } from 'react-router-dom'
 
 export const SideBar = ({ mode }) => {
+    const appTheme = useContext(appThemeContext)
+
     return (
-        <Style>
+        <Style data={appTheme.current}>
             <SideBarPersonal />
             {!mode && <SideBarBlock />}
         </Style>

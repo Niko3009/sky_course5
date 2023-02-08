@@ -1,9 +1,13 @@
 import { startPageStyle as Style, Form } from './startPage/startPageStyle'
 
-import React from 'react'
-const { useState } = React
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
+import { useState } from 'react'
 
 export const StartPage = ({ LogIn }) => {
+    const appTheme = useContext(appThemeContext)
+
     const [doesUserHaveAccount, setState] = useState(true)
 
     const changeForm = function () {
@@ -11,7 +15,7 @@ export const StartPage = ({ LogIn }) => {
     }
 
     return (
-        <Style>
+        <Style data={appTheme.current}>
             {doesUserHaveAccount && (
                 <LoginForm LogIn={LogIn} openRegistrationForm={changeForm} />
             )}

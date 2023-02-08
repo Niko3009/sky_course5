@@ -2,9 +2,14 @@ import { PlayerBarStyle, ProgressBarStyle } from './playerBar/playerBarStyle'
 
 import { useRef, useEffect, useState } from 'react'
 
+import { useContext } from 'react'
+import { appThemeContext } from 'app'
+
 import { ControlBlock } from './playerBar/controlBlock'
 
 export const PlayerBar = () => {
+    const appTheme = useContext(appThemeContext)
+
     useEffect(() => {
         audio = audioRef.current
 
@@ -20,7 +25,7 @@ export const PlayerBar = () => {
     // const [currentSong, setCurrentSong] = useState(songs.data[0])
     const [playStatus, setPlayStatus] = useState(false)
     const [relTrackTime, setRelTrackTime] = useState(0)
-    const [volumeLevel, setVolumeLevel] = useState(0.4)
+    const [volumeLevel, setVolumeLevel] = useState(0.1)
     const [repeatStatus, setRepeatStatus] = useState(true)
 
     const timeUpdate = () => {
@@ -41,7 +46,7 @@ export const PlayerBar = () => {
     let audio
 
     return (
-        <PlayerBarStyle>
+        <PlayerBarStyle data={appTheme.current}>
             <audio
                 // controls
                 ref={audioRef}
@@ -64,6 +69,7 @@ export const PlayerBar = () => {
 }
 
 const ProgressBar = ({ audioRef, relTrackTime }) => {
+    const appTheme = useContext(appThemeContext)
     const barRef = useRef()
 
     useEffect(() => {
@@ -81,7 +87,7 @@ const ProgressBar = ({ audioRef, relTrackTime }) => {
     const style = { width: `${relTrackTime * 100}%` }
 
     return (
-        <ProgressBarStyle ref={barRef}>
+        <ProgressBarStyle ref={barRef} data={appTheme.current}>
             <div style={style}></div>
         </ProgressBarStyle>
     )

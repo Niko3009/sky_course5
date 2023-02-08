@@ -5,7 +5,7 @@ export const PlayerBarStyle = styled('div')`
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(28, 28, 28, 1);
+    background: ${(props) => props.data.colorBasic};
 
     position: fixed;
     bottom: 0;
@@ -128,7 +128,7 @@ export const PlayerBarStyle = styled('div')`
             &__image {
                 width: 51px;
                 height: 51px;
-                background-color: #313131;
+                background-color: ${(props) => props.data.colorN2};
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -150,7 +150,7 @@ export const PlayerBarStyle = styled('div')`
                 font-weight: 400;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
                 white-space: nowrap;
             }
 
@@ -161,7 +161,7 @@ export const PlayerBarStyle = styled('div')`
                 font-weight: 400;
                 font-size: 13px;
                 line-height: 24px;
-                color: #ffffff;
+                color: ${(props) => props.data.colorN1};
             }
 
             &__like-dis {
@@ -229,7 +229,7 @@ export const PlayerBarStyle = styled('div')`
 export const ProgressBarStyle = styled('div')`
     width: 100%;
     height: 5px;
-    background: #2e2e2e;
+    background: ${(props) => props.data.colorN3};
 
     cursor: pointer;
 
