@@ -1,0 +1,23 @@
+.div {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: flex-start;
+
+    margin-right: 120px;
+}
+
+p {
+    height: 6px;
+
+    font-family: monospace;
+    cursor: pointer;
+    font-size: 0.5em;
+    color: #fff;
+
+    gap: 20px;
+}
+
+input[type='checkbox'] {
+    margin-right: 30px;
+}
