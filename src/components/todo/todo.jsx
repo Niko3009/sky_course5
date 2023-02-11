@@ -1,6 +1,5 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import cx from 'classnames'
 import { DeleteTodoBtn } from '../delete-todo/delete-todo'
 
 import { toggleCompleteness } from '../../store/slices/todo'
@@ -18,9 +17,7 @@ export const Todo = ({ todo }) => {
         <li className={styles.item}>
             {todo.completed ? '👌' : '👋'}{' '}
             <span
-                className={cx({
-                    [styles.completed]: todo.completed,
-                })}
+                className={todo.completed ? styles.completed : ''}
                 onClick={toggleTodoItem}
             >
                 {todo.content}
