@@ -1,9 +1,11 @@
-import { NavStyle as Style } from './nav/navStyle'
-
 import { useContext, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+import { idFromStore } from 'back/selectors/userSelector'
 import { appContext } from 'app'
 
-import { Link } from 'react-router-dom'
+import { NavStyle as Style } from './nav/navStyle'
 
 export const Nav = () => {
     const appTheme = useContext(appContext).appTheme
@@ -17,8 +19,8 @@ export const Nav = () => {
 }
 
 const Logo = () => {
-    const id = useContext(appContext).user.id
     const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
 
     return (
         <Link to={`/main/${id}/`} className="logo">
@@ -35,7 +37,7 @@ const Logo = () => {
 const BurgerMenu = () => {
     const accessСontrol = useContext(appContext).accessСontrol
     const appTheme = useContext(appContext).appTheme
-    const id = useContext(appContext).user.id
+    const id = useSelector(idFromStore)
 
     const [visible, setVisible] = useState(true)
     const switchVisibility = () => setVisible(!visible)

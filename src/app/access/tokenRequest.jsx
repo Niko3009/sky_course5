@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useGetTokenMutation } from 'back/services/signApi'
 
-export const TokenRequestSelector = ({ requestData, tokenResponse }) => {
+export const TokenRequestSelector = ({ requestData, getResponse }) => {
     const [
         getToken,
         { data, isUninitialized, isLoading, isSuccess, isError, error },
@@ -21,7 +21,7 @@ export const TokenRequestSelector = ({ requestData, tokenResponse }) => {
 
             if (isError) responseData.error = error.data.detail
 
-            tokenResponse(responseData)
+            getResponse(responseData)
         }
     }, [data])
 

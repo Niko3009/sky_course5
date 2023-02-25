@@ -1,38 +1,28 @@
-import { AccountStyle as Style } from './account/accountStyle'
+import React, { useContext } from 'react'
+import { useDispatch } from 'react-redux'
 
-import React from 'react'
-import { useContext, useState } from 'react'
-
+import { setPlayTrack } from 'back/slices/accountSlice'
 import { appContext } from 'app'
 
 import { Main } from './account/main'
-import { PlayerBar } from './account/playerBar'
+import { Player } from './account/player'
+import { AccountStyle as Style } from './account/accountStyle'
 
 const userContext = React.createContext()
 
 export const Account = () => {
+    const dispatch = useDispatch()
     const appTheme = useContext(appContext).appTheme
 
-    const [accState, setAccState] = useState({ track: null })
-    const changeAccState = (newAccState) => {
-        setAccState(newAccState)
-    }
+    const changeTrack = (track) => dispatch(setPlayTrack({ track }))
 
-    const changeTrack = function (track) {
-        accState.track = track
-        changeAccState(accState)
-    }
-
-    const account = {
-        state: accState,
-        changeTrack: changeTrack,
-    }
+    const account = { changeTrack }
 
     return (
         <userContext.Provider value={{ account }}>
             <Style data={appTheme.current}>
-                <Main mode={accState.mode} />
-                <PlayerBar />
+                <Main />
+                <Player />
             </Style>
         </userContext.Provider>
     )

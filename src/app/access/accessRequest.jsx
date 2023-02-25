@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useEnterAccountMutation } from 'back/services/signApi'
 
-export const AccessRequestSelector = ({ requestData, accessResponse }) => {
+export const AccessRequestSelector = ({ requestData, getResponse }) => {
     const [
         enterAccount,
         { data, isUninitialized, isLoading, isSuccess, isError, error },
@@ -20,7 +20,7 @@ export const AccessRequestSelector = ({ requestData, accessResponse }) => {
 
         if (isError) responseData.error = error.data.detail
 
-        accessResponse(responseData)
+        getResponse(responseData)
     })
 
     return

@@ -8,22 +8,13 @@ export const RegistrationForm = ({ openLoginForm }) => {
     const [addAccount, { isLoading, isSuccess, isError, error }] =
         useAddAccountMutation()
 
-    const [newLogin, setNewLogin] = useState('')
     const [email, setEmail] = useState('')
+    const [newLogin, setNewLogin] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [checkPassword, setCheckPassword] = useState('')
     const [message, setMessage] = useState('')
 
-    const userData = {
-        username: 'sta12',
-        email: 'sta12@mail.ru',
-        password: 'Gfhjkm3434',
-    }
-    // {
-    //     username: newLogin,
-    //     email: `${newLogin}@mail.ru`,
-    //     password: newPassword,
-    // }
+    const userData = { email, username: newLogin, password: newPassword }
 
     const signUp = function () {
         if (!newLogin || !newPassword || !email) {
@@ -41,7 +32,7 @@ export const RegistrationForm = ({ openLoginForm }) => {
 
     useEffect(() => {
         if (isSuccess) {
-            openLoginForm()
+            setMessage('Регистрация прошла успешно')
             return
         }
 

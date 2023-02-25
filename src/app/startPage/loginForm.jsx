@@ -1,105 +1,66 @@
 import { useContext, useState, useEffect } from 'react'
 
 import { appContext } from 'app'
+import { TokenRequestSelector } from 'app/access/tokenRequest'
+import { AccessRequestSelector } from 'app/access/accessRequest'
 
 import { Form } from './startPageStyle'
-import { AccessRequestSelector } from 'app/access/accessRequest'
-import { TokenRequestSelector } from 'app/access/tokenRequest'
 
 export const LoginForm = ({ openRegistrationForm }) => {
     const accessСontrol = useContext(appContext).accessСontrol
-    const currentUser = useContext(appContext).user
 
-    const [newUser, setNewUser] = useState(currentUser)
+    const [state, setState] = useState({})
+    let newState = structuredClone(state)
+
+    const data = state.data
+    const token = state.token
+    const requestOn = state.requestOn
+    const loginHasBeenCompleted = data && token
+    const accessRequired = Boolean(!data && requestOn)
+    const tokenRequired = Boolean(data && !token && requestOn)
+
     const [login, setLogin] = useState('')
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const formData = {
-        username: 'sta12',
-        email: 'sta12@mail.ru',
-        password: 'Gfhjkm3434',
-    }
-
-    const [state, setState] = useState({
-        requestActivity: false,
-        message: '',
-    })
-    const stateObj = state
-    const setNewState = function (newState) {
-        setState({
-            userIsReady: Boolean(newUser.data && newUser.token),
-            requestActivity: newState.requestActivity,
-            message: newState.message,
-        })
-    }
-
-    const userIsReady = Boolean(newUser.data && newUser.token)
-    const accessRequired = Boolean(!newUser.data && state.requestActivity)
-    const tokenRequired = Boolean(
-        newUser.data && !newUser.token && state.requestActivity
-    )
+    const [password, setPass] = useState('')
+    const formData = { username: login, email, password }
 
     const accessRequest = function () {
-        let mistake = ''
+        let mistake
+        if (!login || !password) mistake = 'Заполните все поля'
 
-        // if (!login || !password) mistake = 'Заполните все поля'
-
-        if (!mistake) {
-            state.requestActivity = true
-            state.message = 'Запрос доступа...'
-        } else {
-            state.requestActivity = false
-            state.message = mistake
-        }
-
-        setNewState(state)
+        newState.requestOn = mistake ? false : true
+        newState.message = mistake ? mistake : 'Запрос доступа...'
+        setState(newState)
     }
 
-    const accessResponse = function (response) {
-        if (response.loading) {
-            // console.log('accessResponse:', 'is loading')
-        } else {
-            if (response.success) {
-                // console.log('accessResponse:', 'is success')
-                setNewUser({
-                    data: response.data,
-                })
+    const accessResponse = function ({ loading, success, error, data }) {
+        if (!loading)
+            if (success) {
+                newState.data = data
+                setState(newState)
             } else {
-                // console.log('accessResponse:', 'is error')
-                state.requestActivity = false
-                state.message = response.error
-
-                setNewState(state)
+                newState.requestOn = false
+                newState.message = error
+                setState(newState)
             }
-        }
     }
 
-    const tokenResponse = function (response) {
-        if (response.loading) {
-            // console.log('tokenResponse:', 'is loading')
-        } else {
-            if (response.success) {
-                // console.log('tokenResponse:', 'is success')
-                setNewUser({
-                    data: newUser.data,
-                    token: response.data,
-                })
+    const tokenResponse = function ({ loading, success, error, data }) {
+        if (!loading) {
+            if (success) {
+                newState.token = data
+                newState.message = null
             } else {
-                // console.log('tokenResponse:', 'is error')
-                stateObj.requestActivity = false
-                stateObj.message = response.error
-                setNewState(stateObj)
+                newState.data = null
+                newState.message = error
             }
+            newState.requestOn = false
+            setState(newState)
         }
-    }
-
-    const LogIn = function () {
-        accessСontrol.LogIn(newUser)
     }
 
     useEffect(() => {
-        if (userIsReady) LogIn()
+        if (loginHasBeenCompleted) accessСontrol.LogIn({ data, token })
     })
 
     return (
@@ -126,13 +87,13 @@ export const LoginForm = ({ openRegistrationForm }) => {
                 name="password"
                 placeholder="Пароль"
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) => setPass(event.target.value)}
             />
 
             <button
                 onClick={() => accessRequest()}
                 className={'btn-dark'}
-                disabled={state.requestActivity}
+                disabled={state.requestOn}
             >
                 Войти
             </button>
@@ -146,13 +107,13 @@ export const LoginForm = ({ openRegistrationForm }) => {
             {accessRequired && (
                 <AccessRequestSelector
                     requestData={formData}
-                    accessResponse={accessResponse}
+                    getResponse={accessResponse}
                 />
             )}
             {tokenRequired && (
                 <TokenRequestSelector
                     requestData={formData}
-                    tokenResponse={tokenResponse}
+                    getResponse={tokenResponse}
                 />
             )}
         </Form>

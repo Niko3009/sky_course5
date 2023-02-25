@@ -126,7 +126,7 @@ export const CenterBlockStyle = styled('div')`
             }
         }
 
-        .filterListBox {
+        .filterBox {
             position: absolute;
             left: -1400px;
 
@@ -237,6 +237,10 @@ export const CenterBlockStyle = styled('div')`
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
+
+                & div {
+                    overflow: hidden;
+                }
             }
         }
 
@@ -285,6 +289,7 @@ export const CenterBlockStyle = styled('div')`
             }
 
             &__title-span {
+                margin-left: 20px;
                 font-style: normal;
                 font-weight: 400;
                 font-size: 16px;
@@ -342,7 +347,7 @@ export const CenterBlockStyle = styled('div')`
         }
 
         .activeTrack {
-            border: 2px solid white;
+            border: 2px solid ${(props) => props.data.colorN1};
         }
 
         .track__title-text {

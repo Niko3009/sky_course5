@@ -1,14 +1,17 @@
-import { SideBarStyle as Style } from './sideBar/sideBarStyle'
-
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
+import { userFromStore } from 'back/selectors/userSelector'
 import { appContext } from 'app'
+
+import { SideBarStyle as Style } from './sideBar/sideBarStyle'
 
 export const SideBar = ({ mode }) => {
     const appTheme = useContext(appContext).appTheme
-    const userData = useContext(appContext).user.data
-    const id = useContext(appContext).user.id
+    const user = useSelector(userFromStore)
+    const userData = user.data
+    const id = user.id
 
     return (
         <Style data={appTheme.current}>

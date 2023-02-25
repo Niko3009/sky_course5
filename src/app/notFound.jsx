@@ -1,14 +1,16 @@
 import styled from 'styled-components'
-
-import { useContext } from 'react'
-import { appContext } from 'app'
-
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
+import { idFromStore } from 'back/selectors/userSelector'
+import { appContext } from 'app'
+
 export const NotFound = () => {
-    const appTheme = useContext(appContext).appTheme
-    const id = useContext(appContext).user.id
     const navigate = useNavigate()
+
+    const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
 
     const backToMain = function () {
         navigate(`/main/${id}/`, { replace: true })

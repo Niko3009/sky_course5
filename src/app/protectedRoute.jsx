@@ -1,15 +1,10 @@
-import { useContext } from 'react'
-import { appContext } from 'app'
-
 import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
+import { idFromStore } from 'back/selectors/userSelector'
 
 export const ProtectedRoute = ({ children, redirectPath = '/' }) => {
-    const user = useContext(appContext).user
-
-    const isAllowed = Boolean(user.token?.access)
-
-    if (!isAllowed) {
-        return <Navigate to={redirectPath} replace={true} />
-    }
+    const id = useSelector(idFromStore)
+    if (!id) return <Navigate to={redirectPath} replace={true} />
     return children
 }
