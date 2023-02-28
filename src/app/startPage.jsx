@@ -1,91 +1,31 @@
-import { startPageStyle as Style, Form } from './startPage/startPageStyle'
+import { useContext, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-import { useContext } from 'react'
-import { appThemeContext } from 'app'
+import { idFromStore } from 'back/selectors/userSelector'
+import { appContext } from 'app'
 
-import { useState } from 'react'
+import { LoginForm } from './startPage/loginForm'
+import { RegistrationForm } from './startPage/registrationForm'
 
-export const StartPage = ({ LogIn }) => {
-    const appTheme = useContext(appThemeContext)
+import { startPageStyle as Style } from './startPage/startPageStyle'
 
-    const [doesUserHaveAccount, setState] = useState(true)
+export const StartPage = () => {
+    const navigate = useNavigate()
+    const id = useSelector(idFromStore)
+    const appTheme = useContext(appContext).appTheme
 
-    const changeForm = function () {
-        setState(!doesUserHaveAccount)
-    }
+    const [loginFormState, setState] = useState(true)
+    const changeForm = () => setState(!loginFormState)
+
+    useEffect(() => {
+        if (id) navigate(`/main/${id}/`, { replace: true })
+    })
 
     return (
         <Style data={appTheme.current}>
-            {doesUserHaveAccount && (
-                <LoginForm LogIn={LogIn} openRegistrationForm={changeForm} />
-            )}
-
-            {!doesUserHaveAccount && (
-                <RegistrationForm openLoginForm={changeForm} />
-            )}
+            {loginFormState && <LoginForm openRegistrationForm={changeForm} />}
+            {!loginFormState && <RegistrationForm openLoginForm={changeForm} />}
         </Style>
-    )
-}
-
-const LoginForm = ({ LogIn, openRegistrationForm }) => {
-    return (
-        <Form>
-            <Logo />
-
-            <input type="text" name="login" placeholder="Логин (пока любой)" />
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Пароль (пока любой)"
-            />
-
-            <button
-                onClick={() => {
-                    LogIn('Гость')
-                }}
-                className={'btn-dark'}
-            >
-                Войти
-            </button>
-
-            <button onClick={openRegistrationForm} className={'btn-ligth'}>
-                Зарегистрироваться
-            </button>
-        </Form>
-    )
-}
-
-const RegistrationForm = ({ openLoginForm }) => {
-    return (
-        <Form>
-            <Logo />
-
-            <input type="text" name="login" placeholder="Логин (пока любой)" />
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Пароль (пока любой)"
-            />
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Повторите пароль"
-            />
-
-            <button onClick={openLoginForm} className={'btn-dark'}>
-                Зарегистрироваться
-            </button>
-        </Form>
-    )
-}
-
-const Logo = () => {
-    return (
-        <div>
-            <img className="logo" src="/img/logo2.png" />
-        </div>
     )
 }

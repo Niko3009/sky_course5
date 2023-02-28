@@ -1,114 +1,37 @@
 import { CenterBlockStyle as Style } from './centerBlock/centerBlockStyle'
 
-import React from 'react'
-const { useState } = React
-
-// import { useLocation } from 'react-router-dom'
-
-import { FilterSection } from './centerBlock/filterSection'
-import { PlaylistSection } from './centerBlock/playlistSection'
-import { Search } from './centerBlock/search'
-
 import { useContext } from 'react'
-import { appThemeContext } from 'app'
+import { appContext } from 'app'
 
-import tracks from './data/tracks'
+import { Search } from './centerBlock/search'
+import { AllTracks } from './centerBlock/allTracks'
+import { MyPlaylist } from './centerBlock/myPlaylist'
+import { PlaylistOfDay } from './centerBlock/playlistOfDay'
+import { DanceHits } from './centerBlock/danceHits'
+import { IndieCharge } from './centerBlock/indieCharge'
 
 export const CenterBlock = ({ mode }) => {
-    const appTheme = useContext(appThemeContext)
+    const appTheme = useContext(appContext).appTheme
 
-    const [status, setStatus] = useState({
-        openedFilterList: null,
-        filter: { filterType: null, filterItem: null },
-        isTrackListLoaded: false,
-    })
-    const statusObj = status
-    const changeStatus = function (newStatus) {
-        setStatus({
-            openedFilterList: newStatus.openedFilterList,
-            filter: newStatus.filter,
-            isTrackListLoaded: newStatus.isTrackListLoaded,
-        })
-    }
-
-    const filterTypes = [null, 'author', 'release', 'genre']
-    const selectFilter = function (selectedFilterType) {
-        if (selectedFilterType === status.filter.filterType) {
-            statusObj.openedFilterList = null
-            statusObj.filter.filterType = null
-            statusObj.filter.filterItem = null
-            statusObj.isTrackListLoaded = false
-        } else {
-            statusObj.openedFilterList =
-                selectedFilterType !== status.openedFilterList
-                    ? selectedFilterType
-                    : null
-        }
-        changeStatus(statusObj)
-    }
-    const setFilter = function (newFilterType, newFilterItem) {
-        statusObj.openedFilterList = null
-        statusObj.filter.filterType = newFilterType
-        statusObj.filter.filterItem = newFilterItem
-        statusObj.isTrackListLoaded = false
-        changeStatus(statusObj)
-    }
-    const loadTrackList = function () {
-        statusObj.isTrackListLoaded = true
-        changeStatus(statusObj)
+    const titles = {
+        'my-playlist': 'Мой плейлист',
+        'playlist-of-day': 'Плейлист дня',
+        'dance-hits': '100 танцевальных хитов',
+        'indie-charge': 'Инди заряд',
     }
 
     return (
         <Style data={appTheme.current}>
             <Search />
+            <h2 className="centerblock__h2">
+                {titles[mode] ? titles[mode] : 'Треки'}
+            </h2>
 
-            <SectionTitle mode={mode} />
-
-            {!mode && (
-                <FilterSection
-                    currentFilterType={status.filter.filterType}
-                    selectFilter={selectFilter}
-                    filterTypes={filterTypes}
-                    openedFilterList={status.openedFilterList}
-                    setFilter={setFilter}
-                    tracks={tracks}
-                />
-            )}
-
-            <PlaylistSection
-                tracks={tracks}
-                filter={status.filter}
-                loadTrackList={loadTrackList}
-                isTrackListLoaded={status.isTrackListLoaded}
-            />
+            {mode === null && <AllTracks />}
+            {mode === 'my-playlist' && <MyPlaylist />}
+            {mode === 'playlist-of-day' && <PlaylistOfDay />}
+            {mode === 'dance-hits' && <DanceHits />}
+            {mode === 'indie-charge' && <IndieCharge />}
         </Style>
     )
-}
-
-const SectionTitle = ({ mode }) => {
-    let title
-
-    switch (mode) {
-        case 'my-playlist':
-            title = 'Мой плейлист'
-            break
-
-        case 'playlist-of-day':
-            title = 'Плейлист дня'
-            break
-
-        case 'dance-hits':
-            title = '100 танцевальных хитов'
-            break
-
-        case 'indie-charge':
-            title = 'Инди заряд'
-            break
-
-        default:
-            title = 'Треки'
-            break
-    }
-
-    return <h2 className="centerblock__h2">{title}</h2>
 }

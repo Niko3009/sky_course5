@@ -1,31 +1,25 @@
 import { Routes, Route } from 'react-router-dom'
 
 import { StartPage } from './startPage'
-import { Account } from './account'
-import { Profile } from './profile'
-
 import { ProtectedRoute } from './protectedRoute'
+import { Account } from './account'
 import { NotFound } from './notFound'
+// import { Profile } from './profile'
 
-export const AppRoutes = ({ user, userAccessСontrol }) => {
+export const AppRoutes = () => {
     return (
         <Routes>
-            <Route
-                path="/"
-                element={<StartPage LogIn={userAccessСontrol.LogIn} />}
-            />
-            <Route
-                path="/main/*"
-                element={
-                    <ProtectedRoute isAllowed={Boolean(user)}>
-                        <Account LogOut={userAccessСontrol.LogOut} />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route path="/profile/:id" element={<Profile />} />
-
+            <Route path="/" element={<StartPage />} />
+            <Route path="/main/:id/*" element={<ProtectedLine />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
+    )
+}
+
+export const ProtectedLine = () => {
+    return (
+        <ProtectedRoute>
+            <Account />
+        </ProtectedRoute>
     )
 }

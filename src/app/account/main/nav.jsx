@@ -1,28 +1,29 @@
-import { NavStyle as Style } from './nav/navStyle'
-
-import { useContext } from 'react'
-import { appThemeContext } from 'app'
-
-import { useState } from 'react'
-
+import { useContext, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-export const Nav = ({ LogOut }) => {
-    const appTheme = useContext(appThemeContext)
+import { idFromStore } from 'back/selectors/userSelector'
+import { appContext } from 'app'
+
+import { NavStyle as Style } from './nav/navStyle'
+
+export const Nav = () => {
+    const appTheme = useContext(appContext).appTheme
 
     return (
         <Style data={appTheme.current}>
             <Logo />
-            <BurgerMenu LogOut={LogOut} appTheme={appTheme} />
+            <BurgerMenu />
         </Style>
     )
 }
 
 const Logo = () => {
-    const appTheme = useContext(appThemeContext)
+    const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
 
     return (
-        <Link to="/main" className="logo">
+        <Link to={`/main/${id}/`} className="logo">
             <img
                 className="logo__image"
                 src={`/img/${
@@ -33,8 +34,10 @@ const Logo = () => {
     )
 }
 
-const BurgerMenu = ({ LogOut }) => {
-    const appTheme = useContext(appThemeContext)
+const BurgerMenu = () => {
+    const accessСontrol = useContext(appContext).accessСontrol
+    const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
 
     const [visible, setVisible] = useState(true)
     const switchVisibility = () => setVisible(!visible)
@@ -51,13 +54,15 @@ const BurgerMenu = ({ LogOut }) => {
                 <div>
                     <ul>
                         <li>
-                            <Link to="/main">Главное</Link>
+                            <Link to={`/main/${id}/`}>Главное</Link>
                         </li>
                         <li>
-                            <Link to="/main/my-playlist/1">Мой плейлист</Link>
+                            <Link to={`/main/${id}/my-playlist/`}>
+                                Мой плейлист
+                            </Link>
                         </li>
                         <li>
-                            <p onClick={LogOut}>Выйти</p>
+                            <p onClick={accessСontrol.LogOut}>Выйти</p>
                         </li>
                     </ul>
 

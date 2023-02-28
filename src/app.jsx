@@ -1,53 +1,110 @@
-import { GlobalStyle } from './app/globalStyle'
-import { AppStyle as Style } from './app/appStyle'
-import { appThemes, appThemeContext } from './app/appThemes'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
-import { useState } from 'react'
+import { userFromStore } from 'back/selectors/userSelector'
+import { globalSetUser, globalSetUserToken } from 'back/slices/userSlice'
+
+import { TokenRefreshTimerSelector } from 'app/access/tokenRefresh'
 
 import { AppRoutes } from './app/routes'
-import { useNavigate } from 'react-router-dom'
+import { appThemes } from './app/appThemes'
+import { GlobalStyle } from './app/globalStyle'
+import { AppStyle as Style } from './app/appStyle'
 
 const App = () => {
-    const navigate = useNavigate()
-
-    // const [user, setUser] = useState(null)
-
-    const [theme, setTheme] = useState(appThemes['dark'])
-    const setNewTheme = (themeName) => {
-        if (appThemes[themeName]) {
-            setTheme(appThemes[themeName])
-        } else console.log(`Тема ${themeName} не найдена`)
-    }
-    const appTheme = { current: theme, set: setNewTheme }
-
-    const userAccessСontrol = {
-        LogIn: () => {
-            // setUser({ login: login })
-            localStorage.setItem('token', '1234')
-            navigate('/main', { replace: true })
+    // const dispatch = useDispatch()
+    const initUser = { token: null, data: null, id: null }
+    const [user, setUser] = useState(initUser)
+    const accessСontrol = {
+        LogIn: ({ data, token }) => {
+            const newUser = { id: data.id, data, token }
+            // dispatch(globalSetUser(newUser))
+            setUser(newUser)
+            const username = data.username
+            console.log(time(), `Account (${username}) LOG IN completed`)
         },
         LogOut: () => {
-            // setUser(null)
-            localStorage.clear()
-            navigate('/', { replace: true })
+            // dispatch(globalSetUser(initUser))
+            setUser(initUser)
+            const username = user.data.username
+            console.log(time(), `Account (${username}) LOG OUT completed`)
+        },
+    }
+
+    const [theme, setTheme] = useState(appThemes['dark'])
+    const appTheme = {
+        current: theme,
+        set: (newThemeName) => {
+            const newTheme = appThemes[newThemeName]
+            if (newTheme) setTheme(newTheme)
         },
     }
 
     return (
-        <div className="container">
-            <appThemeContext.Provider value={appTheme}>
-                <GlobalStyle data={appTheme.current} />
-
-                <Style data={appTheme.current}>
-                    <AppRoutes
-                        user={localStorage.getItem('token')}
-                        userAccessСontrol={userAccessСontrol}
-                    />
-                </Style>
-            </appThemeContext.Provider>
-        </div>
+        <appContext.Provider value={{ appTheme, accessСontrol }}>
+            <GlobalBox user={user} setUser={setUser} appTheme={appTheme} />
+            <GlobalStyle data={appTheme.current} />
+        </appContext.Provider>
     )
 }
 
+const GlobalBox = ({ user, setUser, appTheme }) => {
+    const dispatch = useDispatch()
+
+    const userInApp = user
+    const userTokenInApp = userInApp?.token
+    const userInStore = useSelector(userFromStore)
+    const userTokenInStore = userInStore?.token
+    const isGlobalUserRelevant = userInApp?.id === userInStore?.id
+
+    const getRefreshedToken = ({ success, error, data }) => {
+        if (success) {
+            const newToken = data
+            const oldToken = userTokenInStore
+            if (newToken?.access !== oldToken?.access) {
+                dispatch(globalSetUserToken({ token: newToken }))
+                updateTokenInApp(newToken)
+                console.log(time(), `Token refresh`)
+            }
+        } else console.log(time(), `Error (token refresh ): ${error}`)
+    }
+
+    const updateTokenInApp = (newToken) => {
+        user.token = newToken
+        setUser(structuredClone(user))
+    }
+
+    useEffect(() => {
+        if (!isGlobalUserRelevant) dispatch(globalSetUser(userInApp))
+    })
+
+    if (isGlobalUserRelevant)
+        return (
+            <div className="container">
+                <Style data={appTheme.current}>
+                    <AppRoutes />
+                </Style>
+
+                {userTokenInApp && (
+                    <TokenRefreshTimerSelector
+                        requestData={userTokenInApp}
+                        getResponse={getRefreshedToken}
+                    />
+                )}
+            </div>
+        )
+    else return
+}
+
+const time = () => {
+    const Data = new Date()
+    const Hour = Data.getHours()
+    const Minutes = Data.getMinutes()
+    const Seconds = Data.getSeconds()
+    return `[${Hour}:${Minutes}:${Seconds}]`
+}
+
+const appContext = React.createContext()
+
 export default App
-export { appThemeContext }
+export { appContext }

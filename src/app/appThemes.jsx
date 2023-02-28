@@ -1,7 +1,3 @@
-import React from 'react'
-
-export const appThemeContext = React.createContext()
-
 export const appThemes = {
     dark: {
         name: 'dark',

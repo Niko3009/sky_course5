@@ -6,6 +6,11 @@ export const CenterBlockStyle = styled('div')`
     padding: 20px 40px 20px 110px;
 
     & {
+        a,
+        span {
+            cursor: default;
+        }
+
         .centerblock {
             &__search {
                 width: 100%;
@@ -121,7 +126,7 @@ export const CenterBlockStyle = styled('div')`
             }
         }
 
-        .filterListBox {
+        .filterBox {
             position: absolute;
             left: -1400px;
 
@@ -158,7 +163,7 @@ export const CenterBlockStyle = styled('div')`
                 left: 400px;
             }
 
-            &_release {
+            &_release_date {
                 left: 550px;
             }
 
@@ -223,6 +228,8 @@ export const CenterBlockStyle = styled('div')`
                 width: 100%;
                 display: block;
                 margin-bottom: 12px;
+
+                padding: 8px;
             }
 
             &__track {
@@ -230,6 +237,10 @@ export const CenterBlockStyle = styled('div')`
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
+
+                & div {
+                    overflow: hidden;
+                }
             }
         }
 
@@ -265,7 +276,9 @@ export const CenterBlockStyle = styled('div')`
                 stroke: #4e4e4e;
             }
 
-            //&__title-text {}
+            &__title-text {
+                cursor: pointer;
+            }
 
             &__title-link {
                 font-style: normal;
@@ -276,6 +289,7 @@ export const CenterBlockStyle = styled('div')`
             }
 
             &__title-span {
+                margin-left: 20px;
                 font-style: normal;
                 font-weight: 400;
                 font-size: 16px;
@@ -318,6 +332,8 @@ export const CenterBlockStyle = styled('div')`
                 margin-right: 17px;
                 fill: transparent;
                 stroke: #696969;
+
+                cursor: pointer;
             }
 
             &__time-text {
@@ -327,6 +343,17 @@ export const CenterBlockStyle = styled('div')`
                 line-height: 24px;
                 text-align: right;
                 color: #696969;
+            }
+        }
+
+        .activeTrack {
+            border: 2px solid ${(props) => props.data.colorN1};
+        }
+
+        .track__title-text {
+            a,
+            span {
+                cursor: pointer;
             }
         }
     }

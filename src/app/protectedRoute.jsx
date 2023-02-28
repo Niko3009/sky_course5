@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-export const ProtectedRoute = ({ children, redirectPath = '/', isAllowed }) => {
-    // console.log(isAllowed)
+import { idFromStore } from 'back/selectors/userSelector'
 
-    if (!isAllowed) {
-        return <Navigate to={redirectPath} replace={true} />
-    }
+export const ProtectedRoute = ({ children, redirectPath = '/' }) => {
+    const id = useSelector(idFromStore)
+    if (!id) return <Navigate to={redirectPath} replace={true} />
     return children
 }

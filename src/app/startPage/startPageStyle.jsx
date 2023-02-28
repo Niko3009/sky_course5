@@ -12,8 +12,12 @@ export const startPageStyle = styled('div')`
 `
 
 export const Form = styled('div')`
-    height: 439px;
     width: 366px;
+    height: 480px;
+    &.reg {
+        height: 540px;
+    }
+
     border-radius: 12px;
     background-color: #fff;
 
@@ -89,6 +93,23 @@ export const Form = styled('div')`
                     background: #d0cece;
                 }
             }
+        }
+
+        & p {
+            display: inline-block;
+
+            min-height: 46px;
+
+            font-family: 'StratosSkyeng';
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: center;
+
+            color: black;
+            /* lightcoral; */
+
+            overflow: hidden;
         }
 
         .logo {

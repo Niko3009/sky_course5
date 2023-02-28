@@ -10,7 +10,7 @@ export const MainStyle = styled('main')`
     gap: 20px;
 `
 
-export const MainRoutesStyle = styled('main')`
+export const MainContentStyle = styled('main')`
     display: flex;
     justify-content: flex-start;
     gap: 20px;

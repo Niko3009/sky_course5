@@ -1,16 +1,19 @@
 import styled from 'styled-components'
-
-import { useContext } from 'react'
-import { appThemeContext } from 'app'
-
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
+import { idFromStore } from 'back/selectors/userSelector'
+import { appContext } from 'app'
+
 export const NotFound = () => {
-    const appTheme = useContext(appThemeContext)
     const navigate = useNavigate()
 
+    const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
+
     const backToMain = function () {
-        navigate('/main', { replace: true })
+        navigate(`/main/${id}/`, { replace: true })
     }
 
     return (
@@ -36,6 +39,7 @@ export const NotFound = () => {
 
 const Style = styled('div')`
     & {
+        padding-top: 200px;
         width: 920px;
 
         display: flex;

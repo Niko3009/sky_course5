@@ -36,5 +36,19 @@ export const AppStyle = styled('div')`
             margin: 0 auto;
             position: relative;
         } */
+
+        h1 {
+            display: inline-block;
+
+            min-height: 46px;
+
+            font-family: 'StratosSkyeng';
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: center;
+
+            overflow: hidden;
+        }
     }
 `

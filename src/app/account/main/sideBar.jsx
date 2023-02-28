@@ -1,47 +1,50 @@
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
+import { userFromStore } from 'back/selectors/userSelector'
+import { appContext } from 'app'
+
 import { SideBarStyle as Style } from './sideBar/sideBarStyle'
 
-import { useContext } from 'react'
-import { appThemeContext } from 'app'
-
-import { Link } from 'react-router-dom'
-
 export const SideBar = ({ mode }) => {
-    const appTheme = useContext(appThemeContext)
+    const appTheme = useContext(appContext).appTheme
+    const user = useSelector(userFromStore)
+    const userData = user.data
+    const id = user.id
 
     return (
         <Style data={appTheme.current}>
-            <SideBarPersonal />
-            {!mode && <SideBarBlock />}
+            <SideBarPersonal userData={userData} />
+            {mode === null && <SideBarBlock id={id} />}
         </Style>
     )
 }
 
-const SideBarPersonal = () => {
+const SideBarPersonal = ({ userData }) => {
     return (
-        <Link to="/profile/1">
-            <div className="sidebar_personal">
-                <p className="sidebar_personal_name">Sergey.Ivanov</p>
-                <div className="sidebar_personal_avatar"></div>
-            </div>
-        </Link>
+        <div className="sidebar_personal">
+            <p className="sidebar_personal_name">{userData.username}</p>
+            <div className="sidebar_personal_avatar"></div>
+        </div>
     )
 }
 
-const SideBarBlock = () => {
+const SideBarBlock = ({ id }) => {
     return (
         <div className="sidebar_list">
             <div>
-                <Link to="/main/playlist-of-day/1">
+                <Link to={`/main/${id}/playlist-of-day/`}>
                     <img src="/img/playlist01.png" alt="Playlist Of Day" />
                 </Link>
             </div>
             <div>
-                <Link to="/main/dance-hits/1">
+                <Link to={`/main/${id}/dance-hits/`}>
                     <img src="/img/playlist02.png" alt="Dance Hits" />
                 </Link>
             </div>
             <div>
-                <Link to="/main/indie-charge/1">
+                <Link to={`/main/${id}/indie-charge/`}>
                     <img src="/img/playlist03.png" alt="Indie Сharge" />
                 </Link>
             </div>

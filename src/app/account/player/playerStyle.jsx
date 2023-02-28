@@ -17,9 +17,12 @@ export const PlayerBarStyle = styled('div')`
         .bar {
             &__player-block {
                 height: 73px;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
+                & > div {
+                    height: 73px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
             }
 
             &__player {
@@ -123,6 +126,8 @@ export const PlayerBarStyle = styled('div')`
                 grid-template-columns: auto 1fr;
                 grid-template-areas: 'image author' 'image album';
                 align-items: center;
+
+                /* overflow: hidden; */
             }
 
             &__image {
@@ -144,8 +149,11 @@ export const PlayerBarStyle = styled('div')`
             }
 
             &__author-link {
+                max-height: 40px;
+                overflow: hidden;
+
                 grid-area: author;
-                min-width: 49px;
+                width: 175px;
                 font-style: normal;
                 font-weight: 400;
                 font-size: 16px;
@@ -155,8 +163,11 @@ export const PlayerBarStyle = styled('div')`
             }
 
             &__album-link {
+                max-height: 40px;
+                overflow: hidden;
+
                 grid-area: album;
-                min-width: 49px;
+                width: 175px;
                 font-style: normal;
                 font-weight: 400;
                 font-size: 13px;

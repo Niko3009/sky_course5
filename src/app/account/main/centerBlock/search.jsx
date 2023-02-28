@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { appThemeContext } from 'app'
+import { appContext } from 'app'
 
 export const Search = () => {
-    const appTheme = useContext(appThemeContext)
+    const appTheme = useContext(appContext).appTheme
 
     return (
         <div className="centerblock__search search">
