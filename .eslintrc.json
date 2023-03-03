@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -25,7 +26,8 @@
         "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "no-trailing-whitespace": 0,
 
-        "camelcase": ["error"],
+        // "camelcase": ["error", { "allow": ["aa_bb"] }],
+        "camelcase": ["error", { "properties": "never" }],
         "eqeqeq": ["error", "always"]
     }
 }

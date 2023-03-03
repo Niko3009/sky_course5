@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+export const BASE_API_URL = 'https://painassasin.online'
+
 const TRACKS_TAG = { type: 'TRACKS', id: 'LIST' }
 const FAVORS_TAG = { type: 'FAVORS', id: 'LIST' }
 
 export const signApi = createApi({
     reducerPath: 'sign',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://painassasin.online/',
-
+        baseUrl: BASE_API_URL,
         prepareHeaders: (headers, { getState }) => {
             const rootState = getState()
 
@@ -61,7 +62,7 @@ export const signApi = createApi({
         // Tracks
 
         getAllTracks: builder.query({
-            query: () => 'catalog/track/all/',
+            query: () => 'catalog/track/all',
             providesTags: (result = []) => [
                 ...result.map(({ id }) => ({ type: TRACKS_TAG.type, id })),
                 TRACKS_TAG,
@@ -69,36 +70,18 @@ export const signApi = createApi({
         }),
 
         getIndieChargeTracks: builder.query({
-            query: () => 'catalog/selection/1/',
-            providesTags: (result = []) => [
-                ...result.items.map(({ id }) => ({
-                    type: TRACKS_TAG.type,
-                    id,
-                })),
-                TRACKS_TAG,
-            ],
+            query: () => 'catalog/selection/1',
+            providesTags: (result = []) => forProvidesTags(result),
         }),
 
         getDanceHitsTracks: builder.query({
-            query: () => 'catalog/selection/2/',
-            providesTags: (result = []) => [
-                ...result.items.map(({ id }) => ({
-                    type: TRACKS_TAG.type,
-                    id,
-                })),
-                TRACKS_TAG,
-            ],
+            query: () => 'catalog/selection/2',
+            providesTags: (result = []) => forProvidesTags(result),
         }),
 
         getPlaylistOfDayTracks: builder.query({
-            query: () => 'catalog/selection/3/',
-            providesTags: (result = []) => [
-                ...result.items.map(({ id }) => ({
-                    type: TRACKS_TAG.type,
-                    id,
-                })),
-                TRACKS_TAG,
-            ],
+            query: () => 'catalog/selection/3',
+            providesTags: (result = []) => forProvidesTags(result),
         }),
 
         getAllFavors: builder.query({
@@ -154,3 +137,20 @@ export const {
     useAddLikeMutation,
     useDelLikeMutation,
 } = signApi
+
+const forProvidesTags = (result = []) =>
+    result.items
+        ? [
+              ...result.items.map(({ id }) => ({
+                  type: TRACKS_TAG.type,
+                  id,
+              })),
+              TRACKS_TAG,
+          ]
+        : [
+              ...result.map(({ id }) => ({
+                  type: TRACKS_TAG.type,
+                  id,
+              })),
+              TRACKS_TAG,
+          ]

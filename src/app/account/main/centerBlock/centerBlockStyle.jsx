@@ -2,13 +2,22 @@ import styled from 'styled-components'
 
 export const CenterBlockStyle = styled('div')`
     width: auto;
+    height: min-content;
+
+    margin-left: 240px;
+
+    padding: 20px 40px 100px 110px;
     flex-grow: 3;
-    padding: 20px 40px 20px 110px;
 
     & {
         a,
         span {
             cursor: default;
+        }
+
+        p.loadingText {
+            margin: 20px;
+            margin-left: 30px;
         }
 
         .centerblock {
@@ -83,6 +92,9 @@ export const CenterBlockStyle = styled('div')`
             }
 
             &__button {
+                display: flex;
+                flex-direction: row;
+
                 font-style: normal;
                 font-weight: 400;
                 font-size: 16px;
@@ -124,6 +136,27 @@ export const CenterBlockStyle = styled('div')`
                     border-color: #0088ff;
                 }
             }
+
+            & .filterDetector {
+                margin-left: 10px;
+                /* margin-right: 10px; */
+
+                width: 28px;
+                border-radius: 28px;
+                background-color: #ad61ff;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    background-color: #0088ff;
+                }
+
+                & p {
+                    color: white;
+                }
+            }
         }
 
         .filterBox {
@@ -153,8 +186,14 @@ export const CenterBlockStyle = styled('div')`
                 color: ${(props) => props.data.colorN1};
                 cursor: pointer;
 
-                &:hover {
+                &.filterItem {
+                }
+
+                &.filterItem_active {
                     color: #b672ff;
+                }
+
+                &:hover {
                     text-decoration: underline;
                 }
             }

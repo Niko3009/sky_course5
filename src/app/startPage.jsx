@@ -6,7 +6,7 @@ import { idFromStore } from 'back/selectors/userSelector'
 import { appContext } from 'app'
 
 import { LoginForm } from './startPage/loginForm'
-import { RegistrationForm } from './startPage/registrationForm'
+import { RegistrForm } from './startPage/registrForm'
 
 import { startPageStyle as Style } from './startPage/startPageStyle'
 
@@ -25,7 +25,7 @@ export const StartPage = () => {
     return (
         <Style data={appTheme.current}>
             {loginFormState && <LoginForm openRegistrationForm={changeForm} />}
-            {!loginFormState && <RegistrationForm openLoginForm={changeForm} />}
+            {!loginFormState && <RegistrForm openLoginForm={changeForm} />}
         </Style>
     )
 }

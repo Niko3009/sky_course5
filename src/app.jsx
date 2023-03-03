@@ -21,20 +21,22 @@ const App = () => {
             // dispatch(globalSetUser(newUser))
             setUser(newUser)
             const username = data.username
-            console.log(time(), `Account (${username}) LOG IN completed`)
+            console.log(mark(username), `Account LOG IN completed`)
         },
         LogOut: () => {
             // dispatch(globalSetUser(initUser))
             setUser(initUser)
             const username = user.data.username
-            console.log(time(), `Account (${username}) LOG OUT completed`)
+            console.log(mark(username), `Account LOG OUT completed`)
         },
     }
 
     const [theme, setTheme] = useState(appThemes['dark'])
     const appTheme = {
         current: theme,
-        set: (newThemeName) => {
+        set: (nonStandartThemeName = null) => {
+            let newThemeName = theme.name === 'dark' ? 'light' : 'dark'
+            if (nonStandartThemeName) newThemeName = nonStandartThemeName
             const newTheme = appThemes[newThemeName]
             if (newTheme) setTheme(newTheme)
         },
@@ -52,21 +54,24 @@ const GlobalBox = ({ user, setUser, appTheme }) => {
     const dispatch = useDispatch()
 
     const userInApp = user
-    const userTokenInApp = userInApp?.token
     const userInStore = useSelector(userFromStore)
+
+    const userTokenInApp = userInApp?.token
     const userTokenInStore = userInStore?.token
+
+    const username = user?.data?.username
     const isGlobalUserRelevant = userInApp?.id === userInStore?.id
 
-    const getRefreshedToken = ({ success, error, data }) => {
-        if (success) {
-            const newToken = data
-            const oldToken = userTokenInStore
-            if (newToken?.access !== oldToken?.access) {
-                dispatch(globalSetUserToken({ token: newToken }))
-                updateTokenInApp(newToken)
-                console.log(time(), `Token refresh`)
+    const getRefreshedToken = ({ data, isSuccess, error }) => {
+        if (isSuccess) {
+            const token = structuredClone(userTokenInStore)
+            if (data.access !== token?.access) {
+                console.log(mark(username), `Token refresh`)
+                token.access = data.access
+                dispatch(globalSetUserToken({ token }))
+                updateTokenInApp(token)
             }
-        } else console.log(time(), `Error (token refresh ): ${error}`)
+        } else console.log(mark(username), `Token refresh ERROR:`, error)
     }
 
     const updateTokenInApp = (newToken) => {
@@ -88,7 +93,7 @@ const GlobalBox = ({ user, setUser, appTheme }) => {
                 {userTokenInApp && (
                     <TokenRefreshTimerSelector
                         requestData={userTokenInApp}
-                        getResponse={getRefreshedToken}
+                        responseReceiver={getRefreshedToken}
                     />
                 )}
             </div>
@@ -96,15 +101,18 @@ const GlobalBox = ({ user, setUser, appTheme }) => {
     else return
 }
 
-const time = () => {
-    const Data = new Date()
-    const Hour = Data.getHours()
-    const Minutes = Data.getMinutes()
-    const Seconds = Data.getSeconds()
-    return `[${Hour}:${Minutes}:${Seconds}]`
+const mark = (username) => {
+    const date = new Date()
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    const seconds = date.getSeconds()
+    const hh = (hours < 10 ? '0' : '') + hours
+    const mm = (minutes < 10 ? '0' : '') + minutes
+    const ss = (seconds < 10 ? '0' : '') + seconds
+    const time = `[${hh}:${mm}:${ss}]`
+    return `${time} ${username}: `
 }
 
 const appContext = React.createContext()
-
-export default App
 export { appContext }
+export default App

@@ -5,68 +5,83 @@ import { useGetAllTracksQuery } from 'back/services/signApi'
 import { PlaylistSection } from './sectionCompnents/playlistSection'
 import { FilterSection } from './sectionCompnents/filterSection'
 
-export const AllTracks = () => {
-    const { data: tracksData, isSuccess, isError } = useGetAllTracksQuery()
+export const AllTracks = ({ searchValue }) => {
+    const { data, isSuccess, isError } = useGetAllTracksQuery()
     const tracksIsResponse = isSuccess || isError
-    const tracks = structuredClone(tracksData)
+    let tracks = data ? JSON.parse(JSON.stringify(data)) : {}
 
-    const initSort = { type: null }
-    const initFilter = { typeList: null, type: null, item: null }
-    const initState = { sort: initSort, filter: initFilter }
+    const initState = {
+        filter: {
+            openedList: null,
+            author: [],
+            genre: [],
+            release_date: [],
+        },
+        sort: null,
+    }
+
     const [status, setStatus] = useState(initState)
-    const newStatus = structuredClone(status)
+    const newStatus = JSON.parse(JSON.stringify(status))
+    const newFilter = newStatus.filter
     const filter = status.filter
     const sort = status.sort
 
     // filter
-    let filterTypes = { author: 'author', genre: 'genre' }
-    filterTypes['release_date'] = 'release_date'
+    let filters = { author: 'author', genre: 'genre' }
+    filters['release_date'] = 'release_date'
     const openFilterList = function (selectedType) {
-        const newFilter = newStatus.filter
-        const filterListIsOpen = selectedType === filter.typeList
-        const filterTypeIsOn = selectedType === filter.type
-        if (filterTypeIsOn) newStatus.filter = initFilter
-        else newFilter.typeList = filterListIsOpen ? null : selectedType
+        newFilter.openedList =
+            selectedType === filter.openedList ? null : selectedType
         setStatus(newStatus)
     }
-    const setFilter = function (selectedType, selectedItem) {
-        const newFilter = newStatus.filter
-        newFilter.type = selectedType
-        newFilter.item = selectedItem
-        newFilter.typeList = null
+    const setFilter = function (selectedItem) {
+        const index = newFilter[filter.openedList].indexOf(selectedItem)
+        if (index < 0) newFilter[filter.openedList].push(selectedItem)
+        else newFilter[filter.openedList].splice(index, 1)
+        setStatus(newStatus)
+    }
+    const clearFilters = function (selectedType) {
+        newFilter[selectedType] = []
         setStatus(newStatus)
     }
 
     // sort
-    let sortTypes = {}
-    sortTypes['release_date'] = 'release_date'
+    let sorts = { release_date: 'release_date' }
     const setSort = function (selectedType) {
-        const newSort = newStatus.sort
-        newSort.type = selectedType === sort.type ? null : selectedType
+        newStatus.sort = selectedType === sort ? null : selectedType
         setStatus(newStatus)
     }
 
-    return (
-        <div>
-            <FilterSection
-                tracks={tracks}
-                // filter
-                filter={filter}
-                filterTypes={filterTypes}
-                openFilterList={openFilterList}
-                setFilter={setFilter}
-                //  sort
-                sort={sort}
-                sortTypes={sortTypes}
-                setSort={setSort}
-            />
+    if (!isError)
+        return (
+            <div>
+                <FilterSection
+                    tracks={tracks}
+                    // filter
+                    filter={filter}
+                    filters={filters}
+                    openFilterList={openFilterList}
+                    setFilter={setFilter}
+                    clearFilters={clearFilters}
+                    //  sort
+                    sort={sort}
+                    sorts={sorts}
+                    setSort={setSort}
+                />
 
-            <PlaylistSection
-                tracksIsResponse={tracksIsResponse}
-                tracks={tracks}
-                filter={filter}
-                sort={sort}
-            />
-        </div>
-    )
+                <PlaylistSection
+                    tracksIsResponse={tracksIsResponse}
+                    tracks={tracks}
+                    searchValue={searchValue}
+                    filter={filter}
+                    sort={sort}
+                />
+            </div>
+        )
+    else
+        return (
+            <div>
+                <p>Произоша ошибка при загрузке</p>
+            </div>
+        )
 }

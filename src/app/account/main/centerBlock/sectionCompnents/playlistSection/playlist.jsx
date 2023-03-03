@@ -32,7 +32,7 @@ export const Playlist = ({ tracks }) => {
 
 const PlaylistItem = ({ track }) => {
     const currentTrackID = useSelector(trackFromStore)?.id
-    const changeTrack = useContext(userContext).account.changeTrack
+    const changeTrack = useContext(userContext)?.account.changeTrack
     const currentTrackCls = currentTrackID === track.id ? 'activeTrack' : ''
 
     const isItLike = track.like

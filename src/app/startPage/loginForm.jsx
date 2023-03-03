@@ -4,63 +4,72 @@ import { appContext } from 'app'
 import { TokenRequestSelector } from 'app/access/tokenRequest'
 import { AccessRequestSelector } from 'app/access/accessRequest'
 
+import { Logo } from './logo'
 import { Form } from './startPageStyle'
 
-export const LoginForm = ({ openRegistrationForm }) => {
-    const accessСontrol = useContext(appContext).accessСontrol
+export const LoginForm = ({
+    openRegistrationForm,
+    test = { on: false, id: null, func: null },
+}) => {
+    const accessСontrol = useContext(appContext)?.accessСontrol
 
-    const [state, setState] = useState({})
-    let newState = structuredClone(state)
+    const initState = { data: null, token: null, requestOn: null, message: '' }
+    const [state, setState] = useState(initState)
+    // let newState = structuredClone(state)
+    let newState = Object.assign({}, state)
 
     const data = state.data
     const token = state.token
-    const requestOn = state.requestOn
-    const loginHasBeenCompleted = data && token
+    const userHasBeenCompleted = data && token
+
+    const requestOn = state.requestOn && !test.on
     const accessRequired = Boolean(!data && requestOn)
     const tokenRequired = Boolean(data && !token && requestOn)
 
-    const [login, setLogin] = useState('')
+    const [username, setLogin] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPass] = useState('')
-    const formData = { username: login, email, password }
+    const formData = { email, username, password }
+    // const formData = {
+    //     username: 'testUser52',
+    //     email: 'testUser52@mail.ru',
+    //     password: 't546tgr52',
+    // }
 
     const accessRequest = function () {
         let mistake
-        if (!login || !password) mistake = 'Заполните все поля'
+        // if (!username || !password) mistake = 'Заполните все поля'
 
-        newState.requestOn = mistake ? false : true
-        newState.message = mistake ? mistake : 'Запрос доступа...'
+        const isFormValid = !mistake
+        newState.requestOn = isFormValid
+        newState.message = isFormValid ? 'Запрос доступа...' : mistake
         setState(newState)
     }
 
-    const accessResponse = function ({ loading, success, error, data }) {
-        if (!loading)
-            if (success) {
-                newState.data = data
-                setState(newState)
-            } else {
-                newState.requestOn = false
-                newState.message = error
-                setState(newState)
-            }
+    const accessResponse = function ({ data, isSuccess, error }) {
+        if (isSuccess) {
+            newState.data = data
+        } else {
+            newState.requestOn = false
+            newState.message = error
+        }
+        setState(newState)
     }
 
-    const tokenResponse = function ({ loading, success, error, data }) {
-        if (!loading) {
-            if (success) {
-                newState.token = data
-                newState.message = null
-            } else {
-                newState.data = null
-                newState.message = error
-            }
-            newState.requestOn = false
-            setState(newState)
+    const tokenResponse = function ({ data, isSuccess, error }) {
+        if (isSuccess) {
+            newState.token = data
+            newState.message = null
+        } else {
+            newState.data = null
+            newState.message = error
         }
+        newState.requestOn = false
+        setState(newState)
     }
 
     useEffect(() => {
-        if (loginHasBeenCompleted) accessСontrol.LogIn({ data, token })
+        if (userHasBeenCompleted) accessСontrol.LogIn({ data, token })
     })
 
     return (
@@ -69,19 +78,17 @@ export const LoginForm = ({ openRegistrationForm }) => {
 
             <input
                 type="text"
-                name="login"
+                name="username"
                 placeholder="Логин"
-                value={login}
+                value={username}
                 onChange={(event) => setLogin(event.target.value)}
             />
-
             <input
                 type="email"
                 placeholder="e-mail"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
             />
-
             <input
                 type="password"
                 name="password"
@@ -91,9 +98,10 @@ export const LoginForm = ({ openRegistrationForm }) => {
             />
 
             <button
-                onClick={() => accessRequest()}
                 className={'btn-dark'}
+                onClick={test.on ? test.func : accessRequest}
                 disabled={state.requestOn}
+                data-testid={test.id}
             >
                 Войти
             </button>
@@ -104,26 +112,16 @@ export const LoginForm = ({ openRegistrationForm }) => {
 
             <p>{state.message}</p>
 
-            {accessRequired && (
-                <AccessRequestSelector
-                    requestData={formData}
-                    getResponse={accessResponse}
-                />
-            )}
-            {tokenRequired && (
-                <TokenRequestSelector
-                    requestData={formData}
-                    getResponse={tokenResponse}
-                />
-            )}
+            <AccessRequestSelector
+                requestData={formData}
+                responseReceiver={accessResponse}
+                isRequestActivated={accessRequired}
+            />
+            <TokenRequestSelector
+                requestData={formData}
+                responseReceiver={tokenResponse}
+                isRequestActivated={tokenRequired}
+            />
         </Form>
-    )
-}
-
-const Logo = () => {
-    return (
-        <div>
-            <img className="logo" src="/img/logo2.png" />
-        </div>
     )
 }

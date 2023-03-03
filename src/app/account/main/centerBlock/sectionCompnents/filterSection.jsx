@@ -1,24 +1,26 @@
 export const FilterSection = ({
     tracks,
     filter,
-    filterTypes,
+    filters,
     openFilterList,
     setFilter,
+    clearFilters,
     sort,
-    sortTypes,
+    sorts,
     setSort,
 }) => {
     return (
         <div>
             <Filter
                 filter={filter}
-                filterTypes={filterTypes}
+                filters={filters}
                 openFilterList={openFilterList}
+                clearFilters={clearFilters}
                 sort={sort}
-                sortTypes={sortTypes}
+                sorts={sorts}
                 setSort={setSort}
             />
-            {filter.typeList && (
+            {filter.openedList && (
                 <FilterBox
                     tracks={tracks}
                     filter={filter}
@@ -31,26 +33,24 @@ export const FilterSection = ({
 
 const Filter = ({
     filter,
-    filterTypes,
+    filters,
     openFilterList,
+    clearFilters,
     sort,
-    sortTypes,
+    sorts,
     setSort,
 }) => {
-    const currentFilterType = filter.type
-    const currentFilterList = filter.typeList
-    const currentSortType = sort.type
-    const filters = filterTypes
-    const sorts = sortTypes
+    const openedFilterList = filter.openedList
+    const authorFiltersNum = filter['author'].length
+    const dateFiltersNum = filter['release_date'].length
+    const genreFiltersNum = filter['genre'].length
 
     const filterBtnClass = (btnFilterType) =>
         `filter__button ` +
-        (currentFilterType === btnFilterType ? 'filter__current' : '') +
-        (currentFilterList === btnFilterType ? 'filter__selection' : '')
+        (openedFilterList === btnFilterType ? 'filter__current' : '')
 
     const sortBtnClass = (btnSortType) =>
-        `filter__button ` +
-        (currentSortType === btnSortType ? 'filter__current' : '')
+        `filter__button ` + (sort === btnSortType ? 'filter__current' : '')
 
     return (
         <div className="centerblock__filter filter">
@@ -61,6 +61,14 @@ const Filter = ({
                 className={filterBtnClass(filters['author'])}
             >
                 исполнителю
+                {Boolean(authorFiltersNum) && (
+                    <div
+                        className={'filterDetector'}
+                        onClick={() => clearFilters('author')}
+                    >
+                        <p>{authorFiltersNum}</p>
+                    </div>
+                )}
             </div>
 
             <div
@@ -68,6 +76,14 @@ const Filter = ({
                 className={filterBtnClass(filters['release_date'])}
             >
                 году выпуска
+                {Boolean(dateFiltersNum) && (
+                    <div
+                        className={'filterDetector'}
+                        onClick={() => clearFilters('release_date')}
+                    >
+                        <p>{dateFiltersNum}</p>
+                    </div>
+                )}
             </div>
 
             <div
@@ -75,6 +91,14 @@ const Filter = ({
                 className={filterBtnClass(filters['genre'])}
             >
                 жанру
+                {Boolean(genreFiltersNum) && (
+                    <div
+                        className={'filterDetector'}
+                        onClick={() => clearFilters('genre')}
+                    >
+                        <p>{genreFiltersNum}</p>
+                    </div>
+                )}
             </div>
 
             <div className="filter__title">Сортировать по:</div>
@@ -90,36 +114,45 @@ const Filter = ({
 }
 
 const FilterBox = ({ tracks, filter, setFilter }) => {
-    const filterType = filter.typeList
-
-    let filterCriteria = filterType
-    if (filterCriteria === 'release_date') filterCriteria = 'release_date'
+    const filterCriteria = filter.openedList
+    const activeFilterItems = filter[filterCriteria]
+        ? filter[filterCriteria]
+        : []
 
     let list = []
     let checkList = []
     Object.keys(tracks).forEach((key) => {
-        const track = tracks[key]
-        const filterItem = track[filterCriteria]
-
+        const filterItem = tracks[key][filterCriteria]
         if (filterItem) {
-            const FilterItem = () => {
-                return (
-                    <span onClick={() => setFilter(filterType, filterItem)}>
-                        {filterItem}
-                    </span>
+            if (!checkList.includes(filterItem))
+                list.push(
+                    <FilterItem
+                        key={filterItem}
+                        filterItem={filterItem}
+                        activeFilterItems={activeFilterItems}
+                        setFilter={setFilter}
+                    />
                 )
-            }
-
-            if (!checkList.includes(filterItem)) {
-                list.push(<FilterItem key={filterItem} />)
-                checkList.push(filterItem)
-            }
+            checkList.push(filterItem)
         }
     })
 
     return (
-        <div className={`filterBox filterBox_${filter.typeList}`}>
+        <div className={`filterBox filterBox_${filter.openedList}`}>
             {list.length ? <div>{list}</div> : <h4>Ничего не найдено</h4>}
         </div>
+    )
+}
+
+const FilterItem = ({ filterItem, activeFilterItems, setFilter }) => {
+    return (
+        <span
+            onClick={() => setFilter(filterItem)}
+            className={`filterItem${
+                activeFilterItems.includes(filterItem) ? '_active' : ''
+            }`}
+        >
+            {filterItem}
+        </span>
     )
 }

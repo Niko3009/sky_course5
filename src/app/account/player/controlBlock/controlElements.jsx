@@ -39,17 +39,6 @@ export const ShuffleBtn = () => {
     return <ControlBtn name={'shuffle'} type={'icon'} />
 }
 
-export const LikeBtn = ({ name }) => {
-    return (
-        <Icon
-            divClass={`track-play__${name} _btn-icon`}
-            svgClass={`track-play__${name}-svg`}
-            alt={name}
-            src={`/img/icon/sprite.svg#icon-${name}`}
-        />
-    )
-}
-
 export const NoteIcon = () => {
     return (
         <Icon

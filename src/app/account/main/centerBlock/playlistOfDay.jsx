@@ -2,21 +2,27 @@ import { useGetPlaylistOfDayTracksQuery } from 'back/services/signApi'
 
 import { PlaylistSection } from './sectionCompnents/playlistSection'
 
-export const PlaylistOfDay = () => {
-    const {
-        data: tracksData,
-        isSuccess,
-        isError,
-    } = useGetPlaylistOfDayTracksQuery()
+export const PlaylistOfDay = ({ searchValue }) => {
+    const query = useGetPlaylistOfDayTracksQuery
+    const { data, isSuccess, isError } = query()
     const tracksIsResponse = isSuccess || isError
-    const tracks = structuredClone(tracksData)?.items
+    let tracks = data ? JSON.parse(JSON.stringify(data?.items)) : {}
+    // const tracks = structuredClone(data)?.items
 
-    return (
-        <div>
-            <PlaylistSection
-                tracksIsResponse={tracksIsResponse}
-                tracks={tracks}
-            />
-        </div>
-    )
+    if (!isError)
+        return (
+            <div>
+                <PlaylistSection
+                    searchValue={searchValue}
+                    tracksIsResponse={tracksIsResponse}
+                    tracks={tracks}
+                />
+            </div>
+        )
+    else
+        return (
+            <div>
+                <p>Произоша ошибка при загрузке</p>
+            </div>
+        )
 }

@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
 export const SideBarStyle = styled('div')`
+    position: fixed;
+    top: 0;
+    right: 100px;
+
     width: 360px;
     padding: 20px 0 20px 0;
 

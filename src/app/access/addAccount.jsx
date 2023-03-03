@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { useGetTokenMutation } from 'back/services/signApi'
+import { useAddAccountMutation } from 'back/services/signApi'
 
-export const TokenRequestSelector = ({
+export const AddAccountSelector = ({
     requestData,
     responseReceiver,
     isRequestActivated,
@@ -13,7 +13,7 @@ export const TokenRequestSelector = ({
         isSuccess,
         error,
     }) {
-        const requestName = 'Token Request'
+        const requestName = 'Add Account'
         if (isLoading) {
             // console.log(requestName, '...')
         } else {
@@ -32,13 +32,13 @@ export const TokenRequestSelector = ({
         )
 }
 
-const RequestSelector = ({ requestData, responseReceiver }) => {
+export const RequestSelector = ({ requestData, responseReceiver }) => {
     const [
-        getToken,
+        addAccount,
         { data, isUninitialized, isLoading, isSuccess, isError, error },
-    ] = useGetTokenMutation()
+    ] = useAddAccountMutation()
 
-    if (isUninitialized) getToken(requestData)
+    if (isUninitialized) addAccount(requestData)
 
     useEffect(() => {
         if (!isUninitialized) {

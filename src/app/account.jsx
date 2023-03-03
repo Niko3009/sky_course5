@@ -14,7 +14,9 @@ export const Account = () => {
     const dispatch = useDispatch()
     const appTheme = useContext(appContext).appTheme
 
-    const changeTrack = (track) => dispatch(setPlayTrack({ track }))
+    const changeTrack = (track) => {
+        dispatch(setPlayTrack({ track }))
+    }
 
     const account = { changeTrack }
 

@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux'
 import { appContext } from 'app'
 import { trackFromStore } from 'back/selectors/accountSelector'
 
+import { ProgressBar } from './player/progressBar'
 import { ControlBlock } from './player/controlBlock'
-import { PlayerBarStyle, ProgressBarStyle } from './player/playerStyle'
+import { PlayerBarStyle } from './player/playerStyle'
 
 export const Player = () => {
     const track = useSelector(trackFromStore)
@@ -77,30 +78,6 @@ export const PlayerBar = ({ track, trackSrc }) => {
                 playerControl={playerControl}
             />
         </PlayerBarStyle>
-    )
-}
-
-const ProgressBar = ({ audioRef, relTrackTime }) => {
-    const appTheme = useContext(appContext).appTheme
-    const barRef = useRef()
-
-    useEffect(() => {
-        const audio = audioRef.current
-        barRef.current.addEventListener('click', (click) => {
-            const absX = click.pageX
-            const barX = absX - barRef.current.offsetLeft
-            const barWidth = barRef.current.offsetWidth
-            const newTrackTime = (barX / barWidth) * audio.duration
-            audio.currentTime = newTrackTime
-        })
-    })
-
-    const style = { width: `${relTrackTime * 100}%` }
-
-    return (
-        <ProgressBarStyle ref={barRef} data={appTheme.current}>
-            <div style={style}></div>
-        </ProgressBarStyle>
     )
 }
 

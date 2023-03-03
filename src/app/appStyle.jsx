@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 
 export const AppStyle = styled('div')`
+    height: 100vh;
     width: 100%;
-    min-height: 100%;
+    /* min-height: 100%; */
+    /* overflow-y: auto; */
 
     background-color: ${(props) => props.data.colorBasic};
 

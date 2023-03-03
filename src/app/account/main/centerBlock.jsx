@@ -1,6 +1,5 @@
-import { CenterBlockStyle as Style } from './centerBlock/centerBlockStyle'
+import React, { useState, useContext } from 'react'
 
-import { useContext } from 'react'
 import { appContext } from 'app'
 
 import { Search } from './centerBlock/search'
@@ -10,8 +9,12 @@ import { PlaylistOfDay } from './centerBlock/playlistOfDay'
 import { DanceHits } from './centerBlock/danceHits'
 import { IndieCharge } from './centerBlock/indieCharge'
 
+import { CenterBlockStyle as Style } from './centerBlock/centerBlockStyle'
+
 export const CenterBlock = ({ mode }) => {
     const appTheme = useContext(appContext).appTheme
+
+    const [searchValue, setSearchValue] = useState('')
 
     const titles = {
         'my-playlist': 'Мой плейлист',
@@ -22,16 +25,21 @@ export const CenterBlock = ({ mode }) => {
 
     return (
         <Style data={appTheme.current}>
-            <Search />
+            <Search setSearchValue={setSearchValue} />
+
             <h2 className="centerblock__h2">
                 {titles[mode] ? titles[mode] : 'Треки'}
             </h2>
 
-            {mode === null && <AllTracks />}
-            {mode === 'my-playlist' && <MyPlaylist />}
-            {mode === 'playlist-of-day' && <PlaylistOfDay />}
-            {mode === 'dance-hits' && <DanceHits />}
-            {mode === 'indie-charge' && <IndieCharge />}
+            {mode === null && <AllTracks searchValue={searchValue} />}
+            {mode === 'my-playlist' && <MyPlaylist searchValue={searchValue} />}
+            {mode === 'playlist-of-day' && (
+                <PlaylistOfDay searchValue={searchValue} />
+            )}
+            {mode === 'dance-hits' && <DanceHits searchValue={searchValue} />}
+            {mode === 'indie-charge' && (
+                <IndieCharge searchValue={searchValue} />
+            )}
         </Style>
     )
 }
