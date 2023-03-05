@@ -14,9 +14,7 @@ export const AccessRequestSelector = ({
         error,
     }) {
         const requestName = 'Access Request'
-        if (isLoading) {
-            // console.log(requestName, '...')
-        } else {
+        if (!isLoading) {
             if (!isSuccess) console.error(requestName, 'ERROR:', error)
             responseReceiver({ data, isSuccess, error })
         }

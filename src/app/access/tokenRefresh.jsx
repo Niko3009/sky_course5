@@ -28,7 +28,8 @@ export const TokenRefreshTimerSelector = ({
     setTimeout(makeRequest, timerMinuts * 60000)
 
     useEffect(() => {
-        const isDataReady = !requestOn && responceData && refreshCount
+        if (refreshCount === 0) makeRequest()
+        const isDataReady = !requestOn && responceData // && refreshCount
         if (isDataReady) responseReceiver(responceData)
     })
 

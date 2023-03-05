@@ -18,7 +18,17 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
     const playStatus = playerSetting.playStatus
     const volumeLevel = playerSetting.volumeLevel
     const repeatStatus = playerSetting.repeatStatus
+    const shuffleStatus = playerSetting.shuffleStatus
 
+    const switchPlay = () => playerControl.switchPlay()
+    const switchPrevTrack = () => playerControl.switchTrack('prev')
+    const switchNextTrack = () => playerControl.switchTrack('next')
+    const switchRepeatStatus = () =>
+        playerControl.setRepeatStatus(!repeatStatus)
+    const switchShuffleStatus = () =>
+        playerControl.setShuffleStatus(!shuffleStatus)
+
+    let volume
     const volumeControl = {
         switch: (newVolume) =>
             playerControl.setVolumeLevel(
@@ -29,11 +39,6 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
             volumeControl.switch(0)
         },
     }
-
-    const switchRepeatStatus = () =>
-        playerControl.setRepeatStatus(!playerSetting.repeatStatus)
-
-    let volume
     useEffect(() => {
         volume = volumeRef.current
     })
@@ -44,21 +49,24 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
                 <div>
                     <div className="bar__player player">
                         <div className="player__controls">
-                            <PrevBtn />
+                            <PrevBtn onElmClick={switchPrevTrack} />
 
                             <PlayBtn
-                                onElmClick={playerControl.switchPlayback}
+                                onElmClick={switchPlay}
                                 activity={playStatus}
                             />
 
-                            <NextBtn />
+                            <NextBtn onElmClick={switchNextTrack} />
 
                             <RepeatBtn
                                 onElmClick={switchRepeatStatus}
                                 activity={repeatStatus}
                             />
 
-                            <ShuffleBtn />
+                            <ShuffleBtn
+                                onElmClick={switchShuffleStatus}
+                                activity={shuffleStatus}
+                            />
                         </div>
 
                         <div className="player__track-play track-play">

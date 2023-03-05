@@ -13,9 +13,10 @@ export const startPageStyle = styled('div')`
 
 export const Form = styled('div')`
     width: 366px;
-    height: 480px;
+    height: 520px;
+
     &.reg {
-        height: 540px;
+        height: 620px;
     }
 
     border-radius: 12px;
@@ -77,7 +78,8 @@ export const Form = styled('div')`
                 &:hover {
                     background: #3f007d;
                 }
-                &:active {
+                &:active,
+                &:disabled {
                     background: #271a58;
                 }
             }
@@ -85,11 +87,12 @@ export const Form = styled('div')`
             &.btn-ligth {
                 color: black;
 
-                background: #d0cece;
+                background: #f5f5f5;
                 &:hover {
-                    background: #d0cece;
+                    background: #e6e8e9;
                 }
-                &:active {
+                &:active,
+                &:disabled {
                     background: #d0cece;
                 }
             }

@@ -16,7 +16,10 @@ export const PlaylistSection = ({
         genre: [],
         release_date: [],
     },
-    sort = null,
+    sort = {
+        type: null,
+        forwardDirection: true,
+    },
 }) => {
     const dispatch = useDispatch()
 
@@ -30,10 +33,10 @@ export const PlaylistSection = ({
     const isResponse = favorsIsResponse && tracksIsResponse
 
     if (isResponse) {
+        if (searchValue) tracks = recyclebySearch(searchValue, tracks)
         tracks = filterTracks(filter, tracks)
         tracks = sortTracks(sort, tracks)
         tracks = markFavors(favors, tracks)
-        if (searchValue) tracks = recyclebySearch(searchValue, tracks)
     }
 
     useEffect(() => {
@@ -66,7 +69,10 @@ const PlaylistTitle = () => {
 }
 
 const sortTracks = (sort, tracks) => {
-    if (sort === 'release_date') sortByDate(tracks)
+    const k = sort.forwardDirection ? 1 : -1
+
+    if (sort?.type === 'release_date') sortByDate(tracks)
+
     return tracks
 
     function sortByDate(tracks) {
@@ -75,7 +81,7 @@ const sortTracks = (sort, tracks) => {
             let msB = new Date(b.release_date).getTime()
             if (msA === 0) msA = -(10 ** 20)
             if (msB === 0) msB = -(10 ** 20)
-            return msA < msB ? 1 : -1
+            return msA > msB ? k : -k
         })
     }
 }
@@ -105,11 +111,8 @@ const filterTracks = (filter, tracks) => {
 
     let filteredTrackList = tracks ? JSON.parse(JSON.stringify(tracks)) : []
     filteredTrackList = makeFilter(filteredTrackList, 'author')
-    console.log('author', filteredTrackList)
     filteredTrackList = makeFilter(filteredTrackList, 'genre')
-    console.log('genre', filteredTrackList)
     filteredTrackList = makeFilter(filteredTrackList, 'release_date')
-    console.log('date', filteredTrackList)
 
     return filteredTrackList
 }
@@ -138,16 +141,12 @@ const recyclebySearch = (searchValue, tracks) => {
         return 0
     })
 
-    console.log(goodNames)
-
     let newTracks = {}
     let num = 0
     for (let name of goodNames)
         Object.keys(tracks).forEach((N) => {
             if (tracks[N].name === name) newTracks[num++] = tracks[N]
         })
-
-    console.log(newTracks)
 
     return newTracks
 }

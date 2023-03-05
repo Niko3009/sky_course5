@@ -24,6 +24,7 @@ export const CenterBlockStyle = styled('div')`
             &__search {
                 width: 100%;
                 border-bottom: 1px solid #4e4e4e;
+                margin-top: 40px;
                 margin-bottom: 51px;
                 display: flex;
                 flex-direction: row;
@@ -39,14 +40,8 @@ export const CenterBlockStyle = styled('div')`
                 margin-bottom: 45px;
             }
 
-            &__filter {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-bottom: 51px;
-            }
-
             &__content {
+                /* margin-top: 300px; */
                 display: flex;
                 flex-direction: column;
             }
@@ -79,135 +74,6 @@ export const CenterBlockStyle = styled('div')`
                     font-size: 16px;
                     line-height: 24px;
                 }
-            }
-        }
-
-        .filter {
-            &__title {
-                font-style: normal;
-                font-weight: 400;
-                font-size: 16px;
-                line-height: 24px;
-                margin-right: 15px;
-            }
-
-            &__button {
-                display: flex;
-                flex-direction: row;
-
-                font-style: normal;
-                font-weight: 400;
-                font-size: 16px;
-                line-height: 24px;
-                border: 1px solid ${(props) => props.data.colorN1};
-                border-radius: 60px;
-                padding: 6px 20px;
-
-                cursor: pointer;
-
-                &:hover {
-                    border: 1px solid #d9b6ff;
-                    color: #d9b6ff;
-                }
-
-                &:not(:last-child) {
-                    margin-right: 10px;
-                }
-            }
-
-            &__selection {
-                border-color: #ad61ff;
-                color: #ad61ff;
-                cursor: pointer;
-
-                &:hover {
-                    border: 1px inset;
-                    border-color: #ad61ff;
-                }
-            }
-
-            &__current {
-                border-color: #0088ff;
-                color: #0088ff;
-                cursor: pointer;
-
-                &:hover {
-                    border: 1px inset;
-                    border-color: #0088ff;
-                }
-            }
-
-            & .filterDetector {
-                margin-left: 10px;
-                /* margin-right: 10px; */
-
-                width: 28px;
-                border-radius: 28px;
-                background-color: #ad61ff;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                &:hover {
-                    background-color: #0088ff;
-                }
-
-                & p {
-                    color: white;
-                }
-            }
-        }
-
-        .filterBox {
-            position: absolute;
-            left: -1400px;
-
-            background-color: ${(props) => props.data.colorN2};
-            border-radius: 12px;
-
-            padding: 20px;
-
-            & > div {
-                width: 220px;
-                min-height: 20px;
-                max-height: 280px;
-
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-
-                gap: 10px;
-
-                overflow-y: auto;
-            }
-
-            & span {
-                color: ${(props) => props.data.colorN1};
-                cursor: pointer;
-
-                &.filterItem {
-                }
-
-                &.filterItem_active {
-                    color: #b672ff;
-                }
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-
-            &_author {
-                left: 400px;
-            }
-
-            &_release_date {
-                left: 550px;
-            }
-
-            &_genre {
-                left: 700px;
             }
         }
 
@@ -245,21 +111,23 @@ export const CenterBlockStyle = styled('div')`
             }
         }
 
-        .col01 {
-            width: 447px;
-        }
+        .col {
+            &01 {
+                width: 447px;
+            }
 
-        .col02 {
-            width: 321px;
-        }
+            &02 {
+                width: 321px;
+            }
 
-        .col03 {
-            width: 245px;
-        }
+            &03 {
+                width: 245px;
+            }
 
-        .col04 {
-            width: 60px;
-            text-align: start;
+            &04 {
+                width: 60px;
+                text-align: start;
+            }
         }
 
         .playlist {
@@ -281,11 +149,11 @@ export const CenterBlockStyle = styled('div')`
                     overflow: hidden;
                 }
             }
-        }
 
-        .playlist-plug {
-            & div * {
-                background-color: ${(props) => props.data.colorN2};
+            &-plug {
+                & div * {
+                    background-color: ${(props) => props.data.colorN2};
+                }
             }
         }
 

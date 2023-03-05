@@ -38,7 +38,7 @@ export const LoginForm = ({
 
     const accessRequest = function () {
         let mistake
-        // if (!username || !password) mistake = 'Заполните все поля'
+        if (!username || !password) mistake = 'Заполните все поля'
 
         const isFormValid = !mistake
         newState.requestOn = isFormValid

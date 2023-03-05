@@ -31,15 +31,21 @@ export const CenterBlock = ({ mode }) => {
                 {titles[mode] ? titles[mode] : 'Треки'}
             </h2>
 
-            {mode === null && <AllTracks searchValue={searchValue} />}
-            {mode === 'my-playlist' && <MyPlaylist searchValue={searchValue} />}
-            {mode === 'playlist-of-day' && (
-                <PlaylistOfDay searchValue={searchValue} />
-            )}
-            {mode === 'dance-hits' && <DanceHits searchValue={searchValue} />}
-            {mode === 'indie-charge' && (
-                <IndieCharge searchValue={searchValue} />
-            )}
+            <div className="centerPlaylist">
+                {mode === null && <AllTracks searchValue={searchValue} />}
+                {mode === 'my-playlist' && (
+                    <MyPlaylist searchValue={searchValue} />
+                )}
+                {mode === 'playlist-of-day' && (
+                    <PlaylistOfDay searchValue={searchValue} />
+                )}
+                {mode === 'dance-hits' && (
+                    <DanceHits searchValue={searchValue} />
+                )}
+                {mode === 'indie-charge' && (
+                    <IndieCharge searchValue={searchValue} />
+                )}
+            </div>
         </Style>
     )
 }

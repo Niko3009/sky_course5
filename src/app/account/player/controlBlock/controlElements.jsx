@@ -1,13 +1,12 @@
 import { useContext } from 'react'
 import { appContext } from 'app'
 
-export const PrevBtn = () => {
-    return <ControlBtn name={'prev'} type={null} />
+export const PrevBtn = ({ onElmClick }) => {
+    return <ControlBtn name={'prev'} type={null} onElmClick={onElmClick} />
 }
 
 export const PlayBtn = ({ onElmClick, activity }) => {
     const style = activity ? { backgroundColor: '#d9d9d9' } : {}
-
     return (
         <ControlBtn
             name={'play'}
@@ -18,13 +17,12 @@ export const PlayBtn = ({ onElmClick, activity }) => {
     )
 }
 
-export const NextBtn = () => {
-    return <ControlBtn name={'next'} type={null} />
+export const NextBtn = ({ onElmClick }) => {
+    return <ControlBtn name={'next'} type={null} onElmClick={onElmClick} />
 }
 
 export const RepeatBtn = ({ onElmClick, activity }) => {
     const style = activity ? { stroke: '#0055ff' } : {}
-
     return (
         <ControlBtn
             name={'repeat'}
@@ -35,8 +33,16 @@ export const RepeatBtn = ({ onElmClick, activity }) => {
     )
 }
 
-export const ShuffleBtn = () => {
-    return <ControlBtn name={'shuffle'} type={'icon'} />
+export const ShuffleBtn = ({ onElmClick, activity }) => {
+    const style = activity ? { stroke: '#0055ff' } : {}
+    return (
+        <ControlBtn
+            name={'shuffle'}
+            type={'icon'}
+            onElmClick={onElmClick}
+            style={style}
+        />
+    )
 }
 
 export const NoteIcon = () => {
