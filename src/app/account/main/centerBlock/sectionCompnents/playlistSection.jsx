@@ -10,14 +10,22 @@ import { useGetAllFavorsQuery } from 'back/services/signApi'
 export const PlaylistSection = ({
     tracksIsResponse,
     tracks = [],
-    filter = null,
+    searchValue = '',
+    filter = {
+        author: [],
+        genre: [],
+        release_date: [],
+    },
     sort = null,
 }) => {
     const dispatch = useDispatch()
 
+    tracks = tracks ? JSON.parse(JSON.stringify(tracks)) : {}
+
     const { data: favorsData, isSuccess, isError } = useGetAllFavorsQuery()
     const favorsIsResponse = isSuccess || isError
-    const favors = structuredClone(favorsData)
+    let favors = favorsData ? JSON.parse(JSON.stringify(favorsData)) : {}
+    // const favors = structuredClone(favorsData)
 
     const isResponse = favorsIsResponse && tracksIsResponse
 
@@ -25,6 +33,7 @@ export const PlaylistSection = ({
         tracks = filterTracks(filter, tracks)
         tracks = sortTracks(sort, tracks)
         tracks = markFavors(favors, tracks)
+        if (searchValue) tracks = recyclebySearch(searchValue, tracks)
     }
 
     useEffect(() => {
@@ -57,8 +66,7 @@ const PlaylistTitle = () => {
 }
 
 const sortTracks = (sort, tracks) => {
-    const sortType = sort?.type
-    if (sortType === 'release_date') sortByDate(tracks)
+    if (sort === 'release_date') sortByDate(tracks)
     return tracks
 
     function sortByDate(tracks) {
@@ -73,26 +81,73 @@ const sortTracks = (sort, tracks) => {
 }
 
 const filterTracks = (filter, tracks) => {
-    const filterType = filter?.type
-    const filterItem = filter?.item
+    const filtersSummary =
+        filter['author'].length +
+        filter['genre'].length +
+        filter['release_date'].length
+    if (!filtersSummary) return tracks
 
-    if (!filterItem) return tracks
+    const makeFilter = (array, criteria) => {
+        const filterItems = filter[criteria]
+        if (filterItems.length < 1) return array
 
-    let filteredTrackList = []
-    Object.keys(tracks).forEach((key) => {
-        const track = tracks[key]
-        if (track[filterType] === filterItem) filteredTrackList.push(track)
-    })
+        let newArray = []
+        Object.keys(array).forEach((N) => {
+            const track = array[N]
+            if (
+                filterItems.includes(track[criteria]) &&
+                !newArray.includes(track)
+            )
+                newArray.push(track)
+        })
+        return newArray
+    }
+
+    let filteredTrackList = tracks ? JSON.parse(JSON.stringify(tracks)) : []
+    filteredTrackList = makeFilter(filteredTrackList, 'author')
+    console.log('author', filteredTrackList)
+    filteredTrackList = makeFilter(filteredTrackList, 'genre')
+    console.log('genre', filteredTrackList)
+    filteredTrackList = makeFilter(filteredTrackList, 'release_date')
+    console.log('date', filteredTrackList)
 
     return filteredTrackList
 }
 
 const markFavors = (favors, tracks) => {
-    tracks = structuredClone(tracks)
-
     let favorsIds = []
     const isFavorite = (track) => favorsIds.includes(track.id)
     Object.keys(favors).forEach((N) => favorsIds.push(favors[N].id))
     Object.keys(tracks).forEach((N) => (tracks[N].like = isFavorite(tracks[N])))
     return tracks
+}
+
+const recyclebySearch = (searchValue, tracks) => {
+    let goodNames = []
+    Object.keys(tracks).forEach((N) => {
+        if (
+            tracks[N].name.toLowerCase().includes(searchValue.toLowerCase()) &&
+            !goodNames.includes(tracks[N].name)
+        )
+            goodNames.push(tracks[N].name)
+    })
+
+    goodNames.sort(function (a, b) {
+        if (a < b) return -1
+        if (a > b) return 1
+        return 0
+    })
+
+    console.log(goodNames)
+
+    let newTracks = {}
+    let num = 0
+    for (let name of goodNames)
+        Object.keys(tracks).forEach((N) => {
+            if (tracks[N].name === name) newTracks[num++] = tracks[N]
+        })
+
+    console.log(newTracks)
+
+    return newTracks
 }

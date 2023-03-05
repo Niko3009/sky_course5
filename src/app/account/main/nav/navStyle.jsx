@@ -1,7 +1,12 @@
 import styled from 'styled-components'
 
 export const NavStyle = styled('div')`
+    position: fixed;
+    top: 0;
+    left: 0;
+
     width: 240px;
+    height: 100vh;
     background-color: ${(props) => props.data.colorN2};
 
     padding: 20px 0 20px 36px;

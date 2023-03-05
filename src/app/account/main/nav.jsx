@@ -9,42 +9,21 @@ import { NavStyle as Style } from './nav/navStyle'
 
 export const Nav = () => {
     const appTheme = useContext(appContext).appTheme
+    const id = useSelector(idFromStore)
 
     return (
         <Style data={appTheme.current}>
-            <Logo />
-            <BurgerMenu />
+            <Logo id={id} appTheme={appTheme} />
+            <BurgerMenu id={id} />
         </Style>
     )
 }
 
-const Logo = () => {
-    const appTheme = useContext(appContext).appTheme
-    const id = useSelector(idFromStore)
-
-    return (
-        <Link to={`/main/${id}/`} className="logo">
-            <img
-                className="logo__image"
-                src={`/img/${
-                    appTheme.current.name === 'dark' ? 'logo' : 'logo2'
-                }.png`}
-            />
-        </Link>
-    )
-}
-
-const BurgerMenu = () => {
+const BurgerMenu = ({ id }) => {
     const accessСontrol = useContext(appContext).accessСontrol
-    const appTheme = useContext(appContext).appTheme
-    const id = useSelector(idFromStore)
 
     const [visible, setVisible] = useState(true)
     const switchVisibility = () => setVisible(!visible)
-
-    const switchAppTheme = () => {
-        appTheme.set(appTheme.current.name === 'dark' ? 'light' : 'dark')
-    }
 
     return (
         <div>
@@ -66,24 +45,22 @@ const BurgerMenu = () => {
                         </li>
                     </ul>
 
-                    <svg
-                        onClick={switchAppTheme}
-                        style={{
-                            stroke: appTheme.current.colorN1,
-                            fill: appTheme.current.colorN1,
-                        }}
-                    >
-                        <use
-                            xlinkHref={`/img/icon/themeIcon.svg#${
-                                appTheme.current.name === 'dark'
-                                    ? 'moon'
-                                    : 'sun'
-                            }`}
-                        ></use>
-                    </svg>
+                    <ThemeSwitcher />
                 </div>
             )}
         </div>
+    )
+}
+
+const Logo = ({ id, appTheme }) => {
+    const logoName =
+        appTheme.current.name === 'dark' ? 'logo_light' : 'logo_dark'
+    const logoSrc = `/img/${logoName}.png`
+
+    return (
+        <Link to={`/main/${id}/`} className="logo">
+            <img className="logo__image" src={logoSrc} />
+        </Link>
     )
 }
 
@@ -93,6 +70,31 @@ const BurgerWidget = ({ switchVisibility }) => {
             <span />
             <span />
             <span />
+        </div>
+    )
+}
+
+export const ThemeSwitcher = ({
+    test = { on: false, id: null, func: null },
+}) => {
+    const appTheme = useContext(appContext).appTheme
+    return (
+        <div data-testid={test.id}>
+            <svg
+                onClick={() => {
+                    appTheme.set()
+                }}
+                style={{
+                    stroke: appTheme.current.colorN1,
+                    fill: appTheme.current.colorN1,
+                }}
+            >
+                <use
+                    xlinkHref={`/img/icon/themeIcon.svg#${
+                        appTheme.current.name === 'dark' ? 'moon' : 'sun'
+                    }`}
+                ></use>
+            </svg>
         </div>
     )
 }

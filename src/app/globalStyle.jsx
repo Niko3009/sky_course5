@@ -5,10 +5,11 @@ export const GlobalStyle = createGlobalStyle`
 @font-face {
     font-family: 'StratosSkyeng';
 
-    src: local('StratosSkyeng'), local('StratosSkyeng'),
-         url('/fonts/StratosSkyeng.woff2') format('woff2'),
-         url('/fonts/StratosSkyeng.woff') format('woff'),
-         url('/fonts/StratosSkyeng.ttf') format('truetype');
+    src: local('StratosSkyeng'), local('StratosSkyeng');
+    /* src: local('StratosSkyeng'), local('StratosSkyeng'),
+        url('/fonts/StratosSkyeng.woff2') format('woff2'),
+        url('/fonts/StratosSkyeng.woff') format('woff'),
+        url('/fonts/StratosSkyeng.ttf') format('truetype'); */
 
     font-weight: 400;
     font-style: normal;

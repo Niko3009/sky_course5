@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 
-import signApi from 'back/services/signApi.js'
+import signApi from 'back/services/signApi'
 import userReduser from 'back/slices/userSlice'
 import accountReduser from 'back/slices/accountSlice'
 

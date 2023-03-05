@@ -4,11 +4,17 @@ export const PlaylistPlug = () => {
         trackBlockList.push(<PlaylistPlugItem key={i} />)
 
     return (
-        <div className="content__playlist playlist-plug">{trackBlockList}</div>
+        <div>
+            <p className="loadingText">Loading...</p>
+            <div className="content__playlist playlist-plug">
+                {trackBlockList}
+            </div>
+        </div>
     )
 }
 
 const PlaylistPlugItem = () => {
+    const titleString = 'Track loading...'
     const plugString = '       '
     return (
         <div className="playlist__item">
@@ -21,7 +27,7 @@ const PlaylistPlugItem = () => {
                     </div>
                     <div className="track__title-text">
                         <a className="track__title-link" href="#">
-                            {plugString}
+                            {titleString}
                             <span className="track__title-span">
                                 {plugString}
                             </span>

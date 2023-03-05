@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 export const MainStyle = styled('main')`
-    width: 1920px;
-
-    padding-bottom: 60px;
+    width: 100vw; /* 1920px; */
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     display: flex;
     justify-content: flex-start;

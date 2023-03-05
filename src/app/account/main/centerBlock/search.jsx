@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { appContext } from 'app'
 
-export const Search = () => {
+export const Search = ({ setSearchValue }) => {
     const appTheme = useContext(appContext).appTheme
 
     return (
@@ -16,9 +16,10 @@ export const Search = () => {
 
             <input
                 className="search__text"
-                type="search"
+                type="text"
                 placeholder="Поиск"
                 name="search"
+                onChange={(event) => setSearchValue(event.target.value)}
             />
         </div>
     )

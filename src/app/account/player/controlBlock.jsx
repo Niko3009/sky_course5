@@ -7,10 +7,10 @@ import {
     RepeatBtn,
     ShuffleBtn,
     NoteIcon,
-    LikeBtn,
     VolumeIcon,
     VolumeBar,
 } from './controlBlock/controlElements'
+import { LikeBtn } from './controlBlock/likeBtn'
 
 export const ControlBlock = ({ track, playerSetting, playerControl }) => {
     const volumeRef = useRef()
@@ -38,9 +38,9 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
         volume = volumeRef.current
     })
 
-    return (
-        <div className="bar__player-block">
-            {track && (
+    if (track)
+        return (
+            <div className="bar__player-block">
                 <div>
                     <div className="bar__player player">
                         <div className="player__controls">
@@ -75,8 +75,8 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
                             </div>
 
                             <div className="track-play__like-dis">
-                                <LikeBtn name={'like'} />
-                                <LikeBtn name={'dislike'} />
+                                <LikeBtn name={'like'} track={track} />
+                                {/* <LikeBtn name={'dislike'} /> */}
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,6 @@ export const ControlBlock = ({ track, playerSetting, playerControl }) => {
                         />
                     </div>
                 </div>
-            )}
-        </div>
-    )
+            </div>
+        )
 }

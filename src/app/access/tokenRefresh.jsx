@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { useRefreshTokenMutation } from 'back/services/signApi'
 
-export const TokenRefreshTimerSelector = ({ requestData, getResponse }) => {
+export const TokenRefreshTimerSelector = ({
+    requestData,
+    responseReceiver,
+}) => {
     const initState = { refreshCount: 0, requestOn: false, responceData: null }
     const [state, setState] = useState(initState)
     const refreshCount = state.refreshCount
@@ -15,32 +18,31 @@ export const TokenRefreshTimerSelector = ({ requestData, getResponse }) => {
         state.requestData = null
         setState(structuredClone(state))
     }
-    const getIntermediaryResponse = ({ loading, success, error, data }) => {
+    const getIntermediaryResponse = ({ isLoading, isSuccess, error, data }) => {
         state.requestOn = false
-        state.responceData = { refreshCount, success, error, data }
-        if (!loading) setState(structuredClone(state))
+        state.responceData = { refreshCount, isSuccess, error, data }
+        if (!isLoading) setState(structuredClone(state))
     }
 
     const timerMinuts = 3
-
     setTimeout(makeRequest, timerMinuts * 60000)
 
     useEffect(() => {
         const isDataReady = !requestOn && responceData && refreshCount
-        if (isDataReady) getResponse(responceData)
+        if (isDataReady) responseReceiver(responceData)
     })
 
     return (
         requestOn && (
             <TokenRefreshSelector
                 requestData={requestData}
-                getResponse={getIntermediaryResponse}
+                responseReceiver={getIntermediaryResponse}
             />
         )
     )
 }
 
-export const TokenRefreshSelector = ({ requestData, getResponse }) => {
+export const TokenRefreshSelector = ({ requestData, responseReceiver }) => {
     const [
         getToken,
         { data, isUninitialized, isLoading, isSuccess, isError, error },
@@ -51,15 +53,15 @@ export const TokenRefreshSelector = ({ requestData, getResponse }) => {
     useEffect(() => {
         if (!isUninitialized) {
             const responseData = {
-                loading: isLoading,
-                success: isSuccess,
+                isLoading,
+                isSuccess,
                 error: null,
-                data: data,
+                data,
             }
 
             if (isError) responseData.error = error.data.detail
 
-            getResponse(responseData)
+            responseReceiver(responseData)
         }
     })
 
