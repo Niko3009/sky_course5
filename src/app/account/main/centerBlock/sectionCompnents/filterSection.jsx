@@ -1,44 +1,73 @@
+import { useContext } from 'react'
+import { appContext } from 'app'
+
+import { FilterSectionStyle as Style } from './filterSection/filterSectionStyle'
+
 export const FilterSection = ({
     tracks,
+    // filter
     filter,
     filters,
-    openFilterList,
     setFilter,
+    openFilterList,
     clearFilters,
+    //  sort
     sort,
     sorts,
     setSort,
+    openSortList,
+    clearSorts,
 }) => {
+    const appTheme = useContext(appContext).appTheme
     return (
-        <div>
-            <Filter
-                filter={filter}
-                filters={filters}
-                openFilterList={openFilterList}
-                clearFilters={clearFilters}
-                sort={sort}
-                sorts={sorts}
-                setSort={setSort}
-            />
-            {filter.openedList && (
-                <FilterBox
-                    tracks={tracks}
-                    filter={filter}
-                    setFilter={setFilter}
-                />
-            )}
-        </div>
+        <Style data={appTheme.current}>
+            <div className="filterWrapper">
+                <div className="filter_buttons">
+                    <Filter
+                        // filter
+                        filter={filter}
+                        filters={filters}
+                        openFilterList={openFilterList}
+                        clearFilters={clearFilters}
+                        //  sort
+                        sort={sort}
+                        sorts={sorts}
+                        openSortList={openSortList}
+                        clearSorts={clearSorts}
+                    />
+                </div>
+                <div className="filter_boxes">
+                    {filter.openedList && (
+                        <FilterBox
+                            tracks={tracks}
+                            filter={filter}
+                            setFilter={setFilter}
+                        />
+                    )}
+                    {sort.openedList && (
+                        <SortBox
+                            tracks={tracks}
+                            sort={sort}
+                            setSort={setSort}
+                        />
+                    )}
+                </div>
+            </div>
+        </Style>
     )
 }
 
 const Filter = ({
+    // filter
     filter,
     filters,
     openFilterList,
     clearFilters,
+    //  sort
     sort,
     sorts,
-    setSort,
+    openSortList,
+    clearSorts,
 }) => {
     const openedFilterList = filter.openedList
     const authorFiltersNum = filter['author'].length
@@ -52,6 +81,10 @@ const Filter = ({
     const sortBtnClass = (btnSortType) =>
         `filter__button ` + (sort === btnSortType ? 'filter__current' : '')
 
+    const detectorStyle = (criteria) => {
+        return { visibility: criteria ? 'visible' : 'hidden' }
+    }
+
     return (
         <div className="centerblock__filter filter">
             <div className="filter__title">Искать по:</div>
@@ -60,54 +93,58 @@ const Filter = ({
                 onClick={() => openFilterList(filters['author'])}
                 className={filterBtnClass(filters['author'])}
             >
-                исполнителю
-                {Boolean(authorFiltersNum) && (
-                    <div
-                        className={'filterDetector'}
-                        onClick={() => clearFilters('author')}
-                    >
-                        <p>{authorFiltersNum}</p>
-                    </div>
-                )}
+                <span> исполнителю </span>
+                <div
+                    className={'filterDetector'}
+                    onClick={() => clearFilters('author')}
+                    style={detectorStyle(authorFiltersNum)}
+                >
+                    <p>{authorFiltersNum}</p>
+                </div>
             </div>
 
             <div
                 onClick={() => openFilterList(filters['release_date'])}
                 className={filterBtnClass(filters['release_date'])}
             >
-                году выпуска
-                {Boolean(dateFiltersNum) && (
-                    <div
-                        className={'filterDetector'}
-                        onClick={() => clearFilters('release_date')}
-                    >
-                        <p>{dateFiltersNum}</p>
-                    </div>
-                )}
+                <span> году выпуска </span>
+                <div
+                    className={'filterDetector'}
+                    onClick={() => clearFilters('release_date')}
+                    style={detectorStyle(dateFiltersNum)}
+                >
+                    <p>{dateFiltersNum}</p>
+                </div>
             </div>
 
             <div
                 onClick={() => openFilterList(filters['genre'])}
                 className={filterBtnClass(filters['genre'])}
             >
-                жанру
-                {Boolean(genreFiltersNum) && (
-                    <div
-                        className={'filterDetector'}
-                        onClick={() => clearFilters('genre')}
-                    >
-                        <p>{genreFiltersNum}</p>
-                    </div>
-                )}
+                <span> жанру </span>
+                <div
+                    className={'filterDetector'}
+                    onClick={() => clearFilters('genre')}
+                    style={detectorStyle(genreFiltersNum)}
+                >
+                    <p>{genreFiltersNum}</p>
+                </div>
             </div>
 
-            <div className="filter__title">Сортировать по:</div>
+            <div className="sort__title">Сортировать по:</div>
 
             <div
-                onClick={() => setSort(sorts['release_date'])}
+                onClick={() => openSortList(sorts['release_date'])}
                 className={sortBtnClass(sorts['release_date'])}
             >
-                году выпуска
+                <span> году выпуска </span>
+                <div
+                    className={'filterDetector'}
+                    onClick={() => clearSorts('release_date')}
+                    style={detectorStyle(sort.type === 'release_date')}
+                >
+                    <p>{sort.forwardDirection ? '🠉' : '🠋'}</p>
+                </div>
             </div>
         </div>
     )
@@ -143,7 +180,6 @@ const FilterBox = ({ tracks, filter, setFilter }) => {
         </div>
     )
 }
-
 const FilterItem = ({ filterItem, activeFilterItems, setFilter }) => {
     return (
         <span
@@ -153,6 +189,47 @@ const FilterItem = ({ filterItem, activeFilterItems, setFilter }) => {
             }`}
         >
             {filterItem}
+        </span>
+    )
+}
+
+const SortBox = ({ sort, setSort }) => {
+    let list = []
+    list.push(
+        <SortItem
+            key={1}
+            sort={sort}
+            setSort={setSort}
+            direction={'По возрастанию'}
+        />
+    )
+    list.push(
+        <SortItem
+            key={2}
+            sort={sort}
+            setSort={setSort}
+            direction={'По убыванию'}
+        />
+    )
+
+    return (
+        <div className={`sortBox sortBox_${sort.openedList}`}>
+            <div>{list}</div>
+        </div>
+    )
+}
+const SortItem = ({ sort, setSort, direction }) => {
+    const forwardDirection = direction === 'По возрастанию'
+    const active =
+        sort.openedList === sort.type &&
+        sort.forwardDirection === forwardDirection
+
+    return (
+        <span
+            onClick={() => setSort(forwardDirection)}
+            className={`sortItem${active ? '_active' : ''}`}
+        >
+            {direction}
         </span>
     )
 }

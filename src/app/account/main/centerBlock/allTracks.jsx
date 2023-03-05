@@ -17,12 +17,17 @@ export const AllTracks = ({ searchValue }) => {
             genre: [],
             release_date: [],
         },
-        sort: null,
+        sort: {
+            openedList: null,
+            type: null,
+            forwardDirection: true,
+        },
     }
 
     const [status, setStatus] = useState(initState)
     const newStatus = JSON.parse(JSON.stringify(status))
     const newFilter = newStatus.filter
+    const newSort = newStatus.sort
     const filter = status.filter
     const sort = status.sort
 
@@ -32,6 +37,7 @@ export const AllTracks = ({ searchValue }) => {
     const openFilterList = function (selectedType) {
         newFilter.openedList =
             selectedType === filter.openedList ? null : selectedType
+        newSort.openedList = null
         setStatus(newStatus)
     }
     const setFilter = function (selectedItem) {
@@ -47,8 +53,27 @@ export const AllTracks = ({ searchValue }) => {
 
     // sort
     let sorts = { release_date: 'release_date' }
-    const setSort = function (selectedType) {
-        newStatus.sort = selectedType === sort ? null : selectedType
+    const openSortList = function (selectedType) {
+        newSort.openedList =
+            selectedType === sort.openedList ? null : selectedType
+        newFilter.openedList = null
+        setStatus(newStatus)
+    }
+    const setSort = function (selectedForwardDirection) {
+        const selectedType = sort.openedList
+        const isClickOnActiveSort =
+            sort.type === selectedType &&
+            sort.forwardDirection === selectedForwardDirection
+        if (isClickOnActiveSort) newSort.type = null
+        else {
+            newSort.type = selectedType
+            newSort.forwardDirection = selectedForwardDirection
+        }
+        setStatus(newStatus)
+    }
+    const clearSorts = function () {
+        newSort.type = null
+        newSort.forwardDirection = true
         setStatus(newStatus)
     }
 
@@ -60,13 +85,15 @@ export const AllTracks = ({ searchValue }) => {
                     // filter
                     filter={filter}
                     filters={filters}
-                    openFilterList={openFilterList}
                     setFilter={setFilter}
+                    openFilterList={openFilterList}
                     clearFilters={clearFilters}
                     //  sort
                     sort={sort}
                     sorts={sorts}
                     setSort={setSort}
+                    openSortList={openSortList}
+                    clearSorts={clearSorts}
                 />
 
                 <PlaylistSection

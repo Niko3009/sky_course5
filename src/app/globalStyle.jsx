@@ -20,6 +20,8 @@ export const GlobalStyle = createGlobalStyle`
 html, body {
     background-color: ${(props) => props.data.colorBasic};
 
+    position: absolute;
+
     width: 100%;
     height: 100%;
 

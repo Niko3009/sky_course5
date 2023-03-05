@@ -1,14 +1,37 @@
 import { cleanup } from '@testing-library/react'
-import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
+import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
+
+import { useState } from 'react'
+import { appContext } from 'app'
+import { appThemes } from 'app/appThemes'
 
 /**
  * Обертка, предоставляющая store дочерним компонентам
  */
 export function withStoreProvider(store) {
     return function Wrapper({ children }) {
-        return <Provider store={store}>{children}</Provider>
+        const [theme, setTheme] = useState(appThemes['dark'])
+        const appTheme = {
+            current: theme,
+            set: (nonStandartThemeName = null) => {
+                let newThemeName = theme.name === 'dark' ? 'light' : 'dark'
+                if (nonStandartThemeName) newThemeName = nonStandartThemeName
+                const newTheme = appThemes[newThemeName]
+                if (newTheme) setTheme(newTheme)
+            },
+        }
+
+        const accessСontrol = {
+            LogIn: () => {},
+            LogOut: () => {},
+        }
+        return (
+            <appContext.Provider value={{ appTheme, accessСontrol }}>
+                <Provider store={store}>{children}</Provider>
+            </appContext.Provider>
+        )
     }
 }
 

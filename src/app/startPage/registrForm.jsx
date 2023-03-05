@@ -30,8 +30,8 @@ export const RegistrForm = ({
 
     const signupRequest = function () {
         let mistake
-        // if (password !== passwordCheck) mistake = 'Пароли не совпадают'
-        // if (!username || !password || !email) mistake = 'Заполните все поля'
+        if (password !== passwordCheck) mistake = 'Пароли не совпадают'
+        if (!username || !password || !email) mistake = 'Заполните все поля'
 
         const isFormValid = !mistake
         newState.requestOn = isFormValid
@@ -43,7 +43,10 @@ export const RegistrForm = ({
         if (isSuccess) {
             newState.message = 'Регистрация прошла успешно'
         } else {
-            newState.message = error ? error : 'Неизвестная ошибка'
+            const errorText = error[Object.keys(error)[0]]
+                ? error[Object.keys(error)[0]]
+                : 'Неизвестная ошибка'
+            newState.message = errorText
         }
         newState.requestOn = false
         setState(newState)
@@ -67,7 +70,7 @@ export const RegistrForm = ({
             />
             <input
                 type="password"
-                placeholder="Пароль"
+                placeholder="Пароль (минимум 8 символов)"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
             />

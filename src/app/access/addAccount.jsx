@@ -14,9 +14,7 @@ export const AddAccountSelector = ({
         error,
     }) {
         const requestName = 'Add Account'
-        if (isLoading) {
-            // console.log(requestName, '...')
-        } else {
+        if (!isLoading) {
             if (!isSuccess) console.error(requestName, 'ERROR:', error)
             responseReceiver({ data, isSuccess, error })
         }
@@ -40,12 +38,15 @@ export const RequestSelector = ({ requestData, responseReceiver }) => {
 
     if (isUninitialized) addAccount(requestData)
 
+    const responce = () => {
+        const responseData = { data, isLoading, isSuccess, error: null }
+        if (isError) responseData.error = error.data
+        responseReceiver(responseData)
+    }
+
+    if (isError) setTimeout(responce, 1000)
     useEffect(() => {
-        if (!isUninitialized) {
-            const responseData = { data, isLoading, isSuccess, error: null }
-            if (isError) responseData.error = error.data.detail
-            responseReceiver(responseData)
-        }
+        responce()
     }, [data])
 
     return

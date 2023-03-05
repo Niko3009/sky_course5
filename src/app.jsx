@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { userFromStore } from 'back/selectors/userSelector'
 import { globalSetUser, globalSetUserToken } from 'back/slices/userSlice'
+import { clearAccount } from 'back/slices/accountSlice'
 
 import { TokenRefreshTimerSelector } from 'app/access/tokenRefresh'
 
@@ -12,20 +13,27 @@ import { GlobalStyle } from './app/globalStyle'
 import { AppStyle as Style } from './app/appStyle'
 
 const App = () => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const initUser = { token: null, data: null, id: null }
     const [user, setUser] = useState(initUser)
+    const changeUser = (user) => {
+        const freshToken = JSON.parse(localStorage.getItem('token'))
+        if (freshToken) user.token = freshToken
+        dispatch(globalSetUser(user))
+        setUser(user)
+    }
     const accessСontrol = {
         LogIn: ({ data, token }) => {
             const newUser = { id: data.id, data, token }
-            // dispatch(globalSetUser(newUser))
-            setUser(newUser)
+            changeUser(newUser)
+            localStorage.setItem('user', JSON.stringify(newUser))
             const username = data.username
             console.log(mark(username), `Account LOG IN completed`)
         },
         LogOut: () => {
-            // dispatch(globalSetUser(initUser))
-            setUser(initUser)
+            changeUser(initUser)
+            dispatch(clearAccount())
+            localStorage.clear()
             const username = user.data.username
             console.log(mark(username), `Account LOG OUT completed`)
         },
@@ -42,15 +50,28 @@ const App = () => {
         },
     }
 
+    let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+    if (!userInLocalStorage) userInLocalStorage = initUser
+    const isUserDataAdded = userInLocalStorage.id === user.id
+    useEffect(() => {
+        if (!userInLocalStorage) changeUser(initUser)
+        else if (!isUserDataAdded) changeUser(userInLocalStorage)
+    })
+
     return (
         <appContext.Provider value={{ appTheme, accessСontrol }}>
-            <GlobalBox user={user} setUser={setUser} appTheme={appTheme} />
+            <GlobalBox
+                user={user}
+                setUser={setUser}
+                isUserDataAdded={isUserDataAdded}
+                appTheme={appTheme}
+            />
             <GlobalStyle data={appTheme.current} />
         </appContext.Provider>
     )
 }
 
-const GlobalBox = ({ user, setUser, appTheme }) => {
+const GlobalBox = ({ user, setUser, isUserDataAdded, appTheme }) => {
     const dispatch = useDispatch()
 
     const userInApp = user
@@ -67,23 +88,24 @@ const GlobalBox = ({ user, setUser, appTheme }) => {
             const token = structuredClone(userTokenInStore)
             if (data.access !== token?.access) {
                 console.log(mark(username), `Token refresh`)
+
                 token.access = data.access
                 dispatch(globalSetUserToken({ token }))
-                updateTokenInApp(token)
-            }
-        } else console.log(mark(username), `Token refresh ERROR:`, error)
-    }
+                localStorage.setItem('token', JSON.stringify(token))
 
-    const updateTokenInApp = (newToken) => {
-        user.token = newToken
-        setUser(structuredClone(user))
+                user.token = token
+                setUser(structuredClone(user))
+            }
+        } else {
+            console.log(mark(username), `Token refresh ERROR:`, error)
+        }
     }
 
     useEffect(() => {
         if (!isGlobalUserRelevant) dispatch(globalSetUser(userInApp))
     })
 
-    if (isGlobalUserRelevant)
+    if (isUserDataAdded && isGlobalUserRelevant)
         return (
             <div className="container">
                 <Style data={appTheme.current}>
